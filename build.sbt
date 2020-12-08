@@ -33,5 +33,6 @@ lazy val calypso = (project in file("."))
 lazy val core = (project in file("modules/core"))
   .settings(
     name := "calypso-core",
-    description := "calypso core"
+    description := "calypso core",
+    libraryDependencies += "org.mongodb" % "bson" % "3.12.0"
   )
