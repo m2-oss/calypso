@@ -28,11 +28,41 @@ ThisBuild / pomIncludeRepository := (_ => false)
 
 lazy val calypso = (project in file("."))
   .settings(publish / skip := true)
-  .aggregate(core)
+  .aggregate(core, testing, tests)
 
 lazy val core = (project in file("modules/core"))
   .settings(
     name := "calypso-core",
     description := "calypso core",
-    libraryDependencies += "org.mongodb" % "bson" % "3.12.0"
+    libraryDependencies ++= List(
+      "eu.timepit"        %% "refined"         % "0.9.10",
+      "org.mongodb"        % "bson"            % "3.12.0",
+      "org.typelevel"     %% "cats-core"       % "2.1.1",
+      "com.ironcorelabs"  %% "cats-scalatest"  % "3.0.0"   % "test",
+      "org.scalatest"     %% "scalatest"       % "3.2.2"   % "test",
+      "org.scalatestplus" %% "scalacheck-1-14" % "3.2.2.0" % "test"
+    )
   )
+
+lazy val testing = (project in file("modules/testing"))
+  .settings(
+    name := "calypso-testing",
+    description := "calypso testing",
+    libraryDependencies ++= List(
+      "org.typelevel" %% "cats-laws" % "2.1.1"
+    )
+  )
+  .dependsOn(core)
+
+lazy val tests = (project in file("modules/tests"))
+  .settings(
+    name := "calypso-tests",
+    description := "calypso tests",
+    libraryDependencies ++= List(
+      "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.3"     % "test",
+      "eu.timepit"                 %% "refined-scalacheck"        % "0.9.10"    % "test",
+      "org.typelevel"              %% "discipline-scalatest"      % "1.0.0-RC2" % "test"
+    ),
+    publish / skip := true
+  )
+  .dependsOn(core, testing)
