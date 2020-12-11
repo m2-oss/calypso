@@ -22,6 +22,12 @@ ThisBuild / developers := List(
     name = "Vsevolod Levin",
     email = "vsevolod.levin@gmail.com",
     url = url("https://github.com/svol")
+  ),
+  Developer(
+    id = "k7i3",
+    name = "Klim Yakovlev",
+    email = "klim.yakovlev@gmail.com",
+    url = url("https://github.com/k7i3")
   )
 )
 ThisBuild / licenses := List(
