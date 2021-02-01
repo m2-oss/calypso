@@ -13,3 +13,4 @@ jobs:
       - run: |
           sbt compile
           sbt test
+          sbt scalafmtCheckAll
