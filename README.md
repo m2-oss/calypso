@@ -26,7 +26,7 @@ Array[Byte]
 (A, B)
 List[A]
 Set[A]
-SortedSet[K, V]
+SortedSet[A]
 Map[K, V]
 SortedMap[K, V]
 Option[A]
