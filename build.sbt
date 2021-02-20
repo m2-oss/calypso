@@ -83,7 +83,7 @@ lazy val tests = (project in file("modules/tests"))
     name := "calypso-tests",
     description := "calypso tests",
     libraryDependencies ++= List(
-      "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.3"     % "test",
+      "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"     % "test",
       "eu.timepit"                 %% "refined-scalacheck"        % "0.9.10"    % "test",
       "org.typelevel"              %% "discipline-scalatest"      % "1.0.0-RC2" % "test"
     ),
