@@ -10,13 +10,13 @@ import org.scalatest.propspec.AnyPropSpec
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import ru.m2.calypso.syntax._
 
-class DecoderSpec
+class DecoderSuite
     extends AnyPropSpec
     with ScalaCheckDrivenPropertyChecks
     with Matchers
     with EitherMatchers {
 
-  import DecoderSpec._
+  import DecoderSuite._
 
   property("decode lhs") {
     forAll { s: BsonString =>
@@ -38,7 +38,7 @@ class DecoderSpec
 
 }
 
-object DecoderSpec {
+object DecoderSuite {
 
   val decodeStringOrInt: Decoder[Either[String, Int]] =
     Decoder.decodeString.map(_.asLeft).or(Decoder.decodeInt.map(_.asRight))

@@ -14,7 +14,7 @@ import ru.m2.calypso.syntax._
 
 import java.time.Instant
 import java.util.UUID
-import scala.collection.{SortedMap, SortedSet}
+import scala.collection.immutable.{SortedMap, SortedSet}
 import scala.jdk.CollectionConverters._
 
 trait Decoder[A] {

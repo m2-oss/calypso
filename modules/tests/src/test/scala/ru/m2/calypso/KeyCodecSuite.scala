@@ -10,8 +10,8 @@ import org.typelevel.discipline.scalatest.Discipline
 import ru.m2.calypso.MissingInstances._
 import ru.m2.calypso.testing.KeyCodecTests
 
-class KeyCodecTestsSpec extends AnyFunSuiteLike with Discipline {
-  checkAll("KeyCodecTests[String]", KeyCodecTests[String].codec)
-  checkAll("KeyCodecTests[Int]", KeyCodecTests[Int].codec)
-  checkAll("KeyCodecTests[String Refined NonEmpty]", KeyCodecTests[String Refined NonEmpty].codec)
+class KeyCodecSuite extends AnyFunSuiteLike with Discipline {
+  checkAll("KeyCodec[String]", KeyCodecTests[String].codec)
+  checkAll("KeyCodec[Int]", KeyCodecTests[Int].codec)
+  checkAll("KeyCodec[String Refined NonEmpty]", KeyCodecTests[String Refined NonEmpty].codec)
 }

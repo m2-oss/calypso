@@ -9,7 +9,7 @@ import ru.m2.calypso.syntax._
 
 import java.time.Instant
 import java.util.UUID
-import scala.collection.{SortedMap, SortedSet}
+import scala.collection.immutable.{SortedMap, SortedSet}
 
 trait Encoder[A] {
   def apply(a: A): BsonValue

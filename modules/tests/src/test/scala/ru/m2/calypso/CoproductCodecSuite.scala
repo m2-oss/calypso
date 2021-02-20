@@ -4,17 +4,18 @@ import cats.Eq
 import org.scalacheck.ScalacheckShapeless._
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.typelevel.discipline.scalatest.Discipline
-import ru.m2.calypso.CoproductCodecTestsSpec.AorB.{A, B}
 import ru.m2.calypso.syntax._
 import ru.m2.calypso.testing.CodecTests
 
-class CoproductCodecTestsSpec extends AnyFunSuiteLike with Discipline {
-  import CoproductCodecTestsSpec._
+class CoproductCodecSuite extends AnyFunSuiteLike with Discipline {
+  import CoproductCodecSuite._
 
-  checkAll("CodecTests[AorB]", CodecTests[AorB].codec)
+  checkAll("Codec[AorB]", CodecTests[AorB].codec)
 }
 
-object CoproductCodecTestsSpec {
+object CoproductCodecSuite {
+
+  import AorB.{A, B}
 
   sealed trait AorB
   object AorB {
