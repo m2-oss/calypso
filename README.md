@@ -127,7 +127,7 @@ val userId: Either[String, UserId] = bson.as[UserId] // Right(UserId(42))
 
 ### Why?
 Passion for going with Java MongoDB driver in a type-safe manner.
-* `MongoDB Scala Driver` are wrappers over `org.bson` without advantages.
+* `MongoDB Scala Driver` are wrappers around `org.bson` without advantages.
 * `Reactive Scala Driver for MongoDB` can not be used without shenanigans with Java MongoDB driver, as well as it
   does not offer reasonable API to encode/decode case classes.
 * `MongoLess`, `shapeless-reactivemongo`, and `Pure BSON` are based on shapeless, so they are refactoring blind
