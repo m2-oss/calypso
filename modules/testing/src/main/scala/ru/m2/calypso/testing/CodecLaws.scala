@@ -1,8 +1,6 @@
 package ru.m2.calypso.testing
 
 import cats.Eq
-import cats.instances.either._
-import cats.instances.string._
 import cats.laws._
 import cats.laws.discipline.catsLawsIsEqToProp
 import org.scalacheck.{Arbitrary, Prop, Shrink}

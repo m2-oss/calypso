@@ -1,8 +1,6 @@
 package ru.m2.calypso
 
 import cats.data.NonEmptyList
-import cats.instances.either._
-import cats.instances.list._
 import cats.syntax.either._
 import cats.syntax.traverse._
 import eu.timepit.refined.api.{Refined, Validate}
