@@ -8,7 +8,7 @@ A BSON library based on `org.bson`. Encoder and Decoder type classes with instan
 ### Usage
 
 To use calypso in an existing sbt project, add the following dependencies to your build.sbt:
-```
+```scala
 libraryDependencies += "ru.m2" %% "calypso-core" % "<version>"
 ```
 The most current release can be found in the maven badge at the top of this readme.
@@ -16,7 +16,7 @@ The most current release can be found in the maven badge at the top of this read
 ### Supported types
 
 #### Scala
-```
+```scala
 Boolean
 Int
 Long
@@ -35,13 +35,13 @@ Unit
 ```
 
 #### java
-```
+```scala
 java.time.Instant
 java.util.UUID
 ```
 
 #### cats
-```
+```scala
 cats.data.NonEmptyList
 ```
 
@@ -50,7 +50,7 @@ Codecs for [refined](https://github.com/fthomas/refined) types are derived, so i
 
 ### Product type (case class)
 It is possible to construct codecs for [product types](https://en.wikipedia.org/wiki/Product_type) (case classes) using `forProductN` helper methods if you have codecs for each of its elements.
-```
+```scala
 import org.bson.BsonValue
 import ru.m2.calypso.syntax._
 import ru.m2.calypso.{Decoder, Encoder}
@@ -71,7 +71,7 @@ val record: Either[String, Record] = bson.as[Record] // Right(Record(1,John))
 
 ### Coproduct type (sealed trait hierarchy)
 Coproduct is also known as [ADT](https://en.wikipedia.org/wiki/Algebraic_data_type), sum, or [tagged union](https://en.wikipedia.org/wiki/Tagged_union). Not as ergonomic as product type, but it is possible to create codecs for coproduct types using `forCoproductN` helper methods.
-```
+```scala
 import org.bson.BsonValue
 import ru.m2.calypso.syntax._
 import ru.m2.calypso.{Decoder, Encoder}
@@ -103,8 +103,9 @@ val b: Either[String, AorB] = bBson.as[AorB] // Right(B(hello))
 ```
 
 ### Derive codecs
+
 Use existing codecs to derive complex ones.
-```
+```scala
 import org.bson.BsonValue
 import ru.m2.calypso.syntax._
 import ru.m2.calypso.{Decoder, Encoder}
@@ -131,7 +132,7 @@ Passion for going with Java MongoDB driver in a type-safe manner.
 * `circe-bson` use JSON subset of BSON which is a no go for binary data.
 
 ### Design
-```
+```scala
 Encoder[A]: A => org.bson.BsonValue
 Decoder[A]: org.bson.BsonValue => Either[String, A]
 

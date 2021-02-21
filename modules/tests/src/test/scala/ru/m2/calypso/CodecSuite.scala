@@ -1,24 +1,11 @@
 package ru.m2.calypso
 
 import cats.data.NonEmptyList
-import cats.instances.boolean._
-import cats.instances.either._
-import cats.instances.int._
-import cats.instances.list._
-import cats.instances.long._
-import cats.instances.map._
-import cats.instances.option._
-import cats.instances.set._
-import cats.instances.sortedMap._
-import cats.instances.sortedSet._
-import cats.instances.string._
-import cats.instances.tuple._
-import cats.instances.uuid._
 import cats.laws.discipline.arbitrary._
 import eu.timepit.refined.api.Refined
+import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.scalacheck.string._
 import eu.timepit.refined.string.Uuid
-import eu.timepit.refined.types.string.NonEmptyString
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.typelevel.discipline.scalatest.Discipline
 import ru.m2.calypso.MissingInstances._
@@ -46,6 +33,6 @@ class CodecSuite extends AnyFunSuiteLike with Discipline {
   checkAll("Codec[Instant]", CodecTests[Instant].codec)
   checkAll("Codec[UUID]", CodecTests[UUID].codec)
   checkAll("Codec[Unit]", CodecTests[Unit].codec)
-  checkAll("Codec[NonEmptyString]", CodecTests[NonEmptyString].codec)
+  checkAll("Codec[String Refined NonEmpty]", CodecTests[String Refined NonEmpty].codec)
   checkAll("Codec[String Refined Uuid]", CodecTests[String Refined Uuid].codec)
 }
