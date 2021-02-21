@@ -60,10 +60,10 @@ lazy val core = (project in file("modules/core"))
     description := "calypso core",
     libraryDependencies ++= List(
       "eu.timepit"        %% "refined"         % "0.9.10",
-      "org.mongodb"        % "bson"            % "3.12.8",
-      "org.typelevel"     %% "cats-core"       % "2.1.1",
+      "org.mongodb"        % "bson"            % "3.12.2",
+      "org.typelevel"     %% "cats-core"       % "2.4.2",
       "com.ironcorelabs"  %% "cats-scalatest"  % "3.0.0"   % "test",
-      "org.scalatest"     %% "scalatest"       % "3.2.2"   % "test",
+      "org.scalatest"     %% "scalatest"       % "3.2.5"   % "test",
       "org.scalatestplus" %% "scalacheck-1-14" % "3.2.2.0" % "test"
     )
   )
@@ -73,7 +73,7 @@ lazy val testing = (project in file("modules/testing"))
     name := "calypso-testing",
     description := "calypso testing",
     libraryDependencies ++= List(
-      "org.typelevel" %% "cats-laws" % "2.1.1"
+      "org.typelevel" %% "cats-laws" % "2.4.2"
     )
   )
   .dependsOn(core)
