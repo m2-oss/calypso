@@ -16,6 +16,7 @@ import java.util.UUID
 import scala.collection.immutable.{SortedMap, SortedSet}
 
 class CodecSuite extends AnyFunSuiteLike with Discipline {
+  checkAll("Codec[Unit]", CodecTests[Unit].codec)
   checkAll("Codec[Boolean]", CodecTests[Boolean].codec)
   checkAll("Codec[Int]", CodecTests[Int].codec)
   checkAll("Codec[Long]", CodecTests[Long].codec)
@@ -32,7 +33,6 @@ class CodecSuite extends AnyFunSuiteLike with Discipline {
   checkAll("Codec[Array[Byte]]", CodecTests[Array[Byte]].codec)
   checkAll("Codec[Instant]", CodecTests[Instant].codec)
   checkAll("Codec[UUID]", CodecTests[UUID].codec)
-  checkAll("Codec[Unit]", CodecTests[Unit].codec)
   checkAll("Codec[String Refined NonEmpty]", CodecTests[String Refined NonEmpty].codec)
   checkAll("Codec[String Refined Uuid]", CodecTests[String Refined Uuid].codec)
 }

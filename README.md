@@ -17,6 +17,7 @@ The most current release can be found in the maven badge at the top of this read
 
 #### Scala
 ```scala
+Unit
 Boolean
 Int
 Long
@@ -31,7 +32,6 @@ Map[K, V]
 SortedMap[K, V]
 Option[A]
 Either[A, B]
-Unit
 ```
 
 #### java
