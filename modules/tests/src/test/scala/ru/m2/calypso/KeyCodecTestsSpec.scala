@@ -1,7 +1,4 @@
 package ru.m2.calypso
-
-import cats.instances.int._
-import cats.instances.string._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.scalacheck.string._

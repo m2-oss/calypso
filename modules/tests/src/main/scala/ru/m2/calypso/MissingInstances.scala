@@ -1,8 +1,6 @@
 package ru.m2.calypso
 
 import cats.Eq
-import cats.instances.byte._
-import cats.instances.list._
 import cats.syntax.eq._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.collection.NonEmpty
