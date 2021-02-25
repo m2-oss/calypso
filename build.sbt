@@ -47,9 +47,6 @@ ThisBuild / licenses := List(
 )
 ThisBuild / homepage := Some(url("https://github.com/m2-oss/calypso"))
 
-// Remove all additional repository other than Maven Central from POM
-ThisBuild / pomIncludeRepository := (_ => false)
-
 lazy val calypso = (project in file("."))
   .settings(publish / skip := true)
   .aggregate(core, testing, tests)
