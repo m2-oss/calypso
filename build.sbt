@@ -82,7 +82,7 @@ lazy val tests = (project in file("modules/tests"))
     libraryDependencies ++= List(
       "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"  % "test",
       "eu.timepit"                 %% "refined-scalacheck"        % "0.9.21" % "test",
-      "org.typelevel"              %% "discipline-scalatest"      % "2.0.0"  % "test"
+      "org.typelevel"              %% "discipline-scalatest"      % "2.0.1"  % "test"
     ),
     publish / skip := true
   )
