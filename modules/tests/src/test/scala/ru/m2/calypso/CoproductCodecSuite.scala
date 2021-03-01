@@ -3,11 +3,12 @@ package ru.m2.calypso
 import cats.Eq
 import org.scalacheck.ScalacheckShapeless._
 import org.scalatest.funsuite.AnyFunSuiteLike
-import org.typelevel.discipline.scalatest.Discipline
+import org.scalatest.prop.Configuration
+import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 import ru.m2.calypso.syntax._
 import ru.m2.calypso.testing.CodecTests
 
-class CoproductCodecSuite extends AnyFunSuiteLike with Discipline {
+class CoproductCodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
   import CoproductCodecSuite._
 
   checkAll("Codec[AorB]", CodecTests[AorB].codec)

@@ -156,7 +156,7 @@ First, you will need to specify dependencies on `calypso-testing` in your `build
 ```scala
 libraryDependencies ++= List(
   "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"     % "test",
-  "org.typelevel"              %% "discipline-scalatest"      % "1.0.0-RC2" % "test",
+  "org.typelevel"              %% "discipline-scalatest"      % "2.0.0"     % "test",
   "ru.m2"                      %% "calypso-testing"           % "<version>" % "test"
 )
 ```
@@ -181,10 +181,11 @@ ScalaCheck requires Arbitrary instances for data types being tested. We will use
 ```scala
 import org.scalacheck.ScalacheckShapeless._
 import org.scalatest.funsuite.AnyFunSuiteLike
-import org.typelevel.discipline.scalatest.Discipline
+import org.scalatest.prop.Configuration
+import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 import ru.m2.calypso.testing.CodecTests
 
-class CodecSuite extends AnyFunSuiteLike with Discipline {
+class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
   checkAll("Codec[UserId]", CodecTests[UserId].codec)
 }
 ```

@@ -7,7 +7,8 @@ import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.scalacheck.string._
 import eu.timepit.refined.string.Uuid
 import org.scalatest.funsuite.AnyFunSuiteLike
-import org.typelevel.discipline.scalatest.Discipline
+import org.scalatest.prop.Configuration
+import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 import ru.m2.calypso.MissingInstances._
 import ru.m2.calypso.testing.CodecTests
 
@@ -15,7 +16,7 @@ import java.time.Instant
 import java.util.UUID
 import scala.collection.immutable.{SortedMap, SortedSet}
 
-class CodecSuite extends AnyFunSuiteLike with Discipline {
+class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
   checkAll("Codec[Unit]", CodecTests[Unit].codec)
   checkAll("Codec[Boolean]", CodecTests[Boolean].codec)
   checkAll("Codec[Int]", CodecTests[Int].codec)
