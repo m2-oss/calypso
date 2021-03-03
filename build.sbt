@@ -41,12 +41,12 @@ ThisBuild / developers := List(
     email = "alexkovalenko412@gmail.com",
     url = url("https://github.com/alexk412")
   ),
-	Developer(
-		id = "sapizhak",
-		name = "Bogdan Sapizhak",
-		email = "gohcbro@gmail.com",
-		url = url("https://github.com/sapizhak")
-	)
+  Developer(
+    id = "sapizhak",
+    name = "Bogdan Sapizhak",
+    email = "gohcbro@gmail.com",
+    url = url("https://github.com/sapizhak")
+  )
 )
 ThisBuild / licenses := List(
   "MIT License" -> url("https://www.opensource.org/licenses/mit-license")
