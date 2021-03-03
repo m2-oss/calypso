@@ -156,7 +156,7 @@ First, you will need to specify dependencies on `calypso-testing` in your `build
 ```scala
 libraryDependencies ++= List(
   "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"     % "test",
-  "org.typelevel"              %% "discipline-scalatest"      % "2.0.0"     % "test",
+  "org.typelevel"              %% "discipline-scalatest"      % "2.1.2"     % "test",
   "ru.m2"                      %% "calypso-testing"           % "<version>" % "test"
 )
 ```
