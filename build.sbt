@@ -66,7 +66,7 @@ lazy val core = (project in file("modules/core"))
       "org.mongodb"        % "bson"            % "4.2.2",
       "org.typelevel"     %% "cats-core"       % "2.4.2",
       "com.ironcorelabs"  %% "cats-scalatest"  % "3.1.1"   % "test",
-      "org.scalatest"     %% "scalatest"       % "3.2.5"   % "test",
+      "org.scalatest"     %% "scalatest"       % "3.2.6"   % "test",
       "org.scalatestplus" %% "scalacheck-1-14" % "3.2.2.0" % "test"
     )
   )
