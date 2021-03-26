@@ -17,7 +17,6 @@ class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with 
           (k.asKey, v.asBson) :: xs
         }.reverse
       )
-
       m.asBson.shouldBe(expected)
     }
   }
