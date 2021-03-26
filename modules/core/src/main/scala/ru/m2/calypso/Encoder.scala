@@ -66,22 +66,14 @@ object Encoder extends ProductEncoder with CoproductEncoder {
     */
   implicit def encodeMap[K: KeyEncoder, V: Encoder]: Encoder[Map[K, V]] =
     Encoder.instance { m =>
-      Bson.of(
-        m.foldLeft(List.empty[(String, BsonValue)]) { case (xs, (k, v)) =>
-          (k.asKey, v.asBson) :: xs
-        }.reverse
-      )
+      Bson.of(m.toList.map { case (k, v) => k.asKey -> v.asBson })
     }
 
   /** Preserves iteration order
     */
   implicit def encodeSortedMap[K: KeyEncoder: Ordering, V: Encoder]: Encoder[SortedMap[K, V]] =
     Encoder.instance { m =>
-      Bson.of(
-        m.foldLeft(List.empty[(String, BsonValue)]) { case (xs, (k, v)) =>
-          (k.asKey, v.asBson) :: xs
-        }.reverse
-      )
+      Bson.of(m.toList.map { case (k, v) => k.asKey -> v.asBson })
     }
 
   implicit def encodeOption[A: Encoder]: Encoder[Option[A]] =
