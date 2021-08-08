@@ -63,7 +63,7 @@ lazy val core = (project in file("modules/core"))
     description := "calypso core",
     libraryDependencies ++= List(
       "eu.timepit"        %% "refined"         % "0.9.27",
-      "org.mongodb"        % "bson"            % "4.2.3",
+      "org.mongodb"        % "bson"            % "4.3.1",
       "org.typelevel"     %% "cats-core"       % "2.6.1",
       "com.ironcorelabs"  %% "cats-scalatest"  % "3.1.1"   % "test",
       "org.scalatest"     %% "scalatest"       % "3.2.9"   % "test",
