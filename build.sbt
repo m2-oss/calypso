@@ -1,7 +1,7 @@
 ThisBuild / scalaVersion := "2.13.6"
 
-ThisBuild / organization := "ru.m2"
-ThisBuild / organizationName := "m2"
+ThisBuild / organization         := "ru.m2"
+ThisBuild / organizationName     := "m2"
 ThisBuild / organizationHomepage := Some(url("https://m2.ru"))
 
 ThisBuild / scmInfo := Some(
@@ -59,7 +59,7 @@ lazy val calypso = (project in file("."))
 
 lazy val core = (project in file("modules/core"))
   .settings(
-    name := "calypso-core",
+    name        := "calypso-core",
     description := "calypso core",
     libraryDependencies ++= List(
       "eu.timepit"        %% "refined"         % "0.9.27",
@@ -73,7 +73,7 @@ lazy val core = (project in file("modules/core"))
 
 lazy val testing = (project in file("modules/testing"))
   .settings(
-    name := "calypso-testing",
+    name        := "calypso-testing",
     description := "calypso testing",
     libraryDependencies ++= List(
       "org.typelevel" %% "cats-laws" % "2.6.1"
@@ -83,7 +83,7 @@ lazy val testing = (project in file("modules/testing"))
 
 lazy val tests = (project in file("modules/tests"))
   .settings(
-    name := "calypso-tests",
+    name        := "calypso-tests",
     description := "calypso tests",
     libraryDependencies ++= List(
       "com.github.alexarchambault" %% "scalacheck-shapeless_1.15" % "1.3.0"  % "test",
