@@ -12,8 +12,6 @@ import scalapb.GeneratedEnum
 import scalapb.GeneratedEnumCompanion
 import scalapb.UnknownFieldSet
 
-import java.time.Instant
-
 object MissingInstances {
 
   implicit def eqGeneratedEnum[A <: GeneratedEnum]: Eq[A] = Eq.fromUniversalEquals
@@ -22,10 +20,10 @@ object MissingInstances {
 
   implicit val arbTimestamp: Arbitrary[Timestamp] =
     Arbitrary(
-      arbitrary[Instant].map { instant =>
-        val epoch = instant.getEpochSecond
-        Timestamp(epoch, instant.getNano)
-      }
+      for {
+        seconds <- arbitrary[Long]
+        nanos   <- arbitrary[Int]
+      } yield Timestamp(seconds, nanos)
     )
 
   implicit val arbUnknownFieldSet: Arbitrary[UnknownFieldSet] =
