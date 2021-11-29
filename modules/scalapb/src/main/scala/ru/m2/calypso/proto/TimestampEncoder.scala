@@ -7,7 +7,6 @@ import ru.m2.calypso.Encoder
 
 object TimestampEncoder {
   implicit val encodeTimestamp: Encoder[Timestamp] =
-    Encoder
-      .encodeInstant
+    Encoder.encodeInstant
       .contramap(t => Instant.ofEpochSecond(t.seconds, t.nanos.toLong))
 }
