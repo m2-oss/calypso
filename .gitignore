@@ -1,1 +1,4 @@
 target/
+.bsp/
+.idea/
+.DS_Store
