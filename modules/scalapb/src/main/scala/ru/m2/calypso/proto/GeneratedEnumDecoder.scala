@@ -7,7 +7,7 @@ import scalapb.GeneratedEnumCompanion
 
 object GeneratedEnumDecoder {
   implicit def decodeGeneratedEnum[A <: GeneratedEnum: GeneratedEnumCompanion]: Decoder[A] =
-    Decoder.decodeInt.emap { e =>
+    Decoder[Int].emap { e =>
       Either
         .catchNonFatal(implicitly[GeneratedEnumCompanion[A]].fromValue(e))
         .bimap(_.getMessage, identity)

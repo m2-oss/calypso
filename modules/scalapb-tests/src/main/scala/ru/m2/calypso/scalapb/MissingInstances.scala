@@ -1,4 +1,4 @@
-package ru.m2.calypso
+package ru.m2.calypso.scalapb
 
 import cats.Eq
 import cats.syntax.eq._

@@ -4,10 +4,11 @@ import cats.syntax.either._
 import com.google.protobuf.timestamp.Timestamp
 import ru.m2.calypso.Decoder
 
+import java.time.Instant
+
 object TimestampDecoder {
   implicit val decodeTimestamp: Decoder[Timestamp] =
-    Decoder.decodeInstant.emap { instant =>
-      val epoch = instant.getEpochSecond
-      Timestamp(epoch, instant.getNano).asRight
+    Decoder[Instant].emap { instant =>
+      Timestamp(instant.getEpochSecond, instant.getNano).asRight
     }
 }
