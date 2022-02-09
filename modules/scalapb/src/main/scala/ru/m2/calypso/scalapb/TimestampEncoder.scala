@@ -1,4 +1,4 @@
-package ru.m2.calypso.proto
+package ru.m2.calypso.scalapb
 
 import java.time.Instant
 

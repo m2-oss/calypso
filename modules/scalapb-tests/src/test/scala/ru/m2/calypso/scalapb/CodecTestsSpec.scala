@@ -6,10 +6,10 @@ import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
 import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 import ru.m2.calypso.scalapb.MissingInstances._
-import ru.m2.calypso.proto.GeneratedEnumDecoder._
-import ru.m2.calypso.proto.GeneratedEnumEncoder._
-import ru.m2.calypso.proto.TimestampDecoder._
-import ru.m2.calypso.proto.TimestampEncoder._
+import ru.m2.calypso.scalapb.GeneratedEnumDecoder._
+import ru.m2.calypso.scalapb.GeneratedEnumEncoder._
+import ru.m2.calypso.scalapb.TimestampDecoder._
+import ru.m2.calypso.scalapb.TimestampEncoder._
 import ru.m2.calypso.testing.CodecTests
 
 class CodecTestsSpec extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {

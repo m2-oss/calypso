@@ -1,4 +1,4 @@
-package ru.m2.calypso.proto
+package ru.m2.calypso.scalapb
 
 import cats.syntax.either._
 import ru.m2.calypso.Decoder
