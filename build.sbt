@@ -55,7 +55,7 @@ ThisBuild / homepage := Some(url("https://github.com/m2-oss/calypso"))
 
 lazy val calypso = (project in file("."))
   .settings(publish / skip := true)
-  .aggregate(core, testing, tests)
+  .aggregate(core, scalapb, testing, tests, scalapbTests)
 
 lazy val core = (project in file("modules/core"))
   .settings(
@@ -70,6 +70,29 @@ lazy val core = (project in file("modules/core"))
       "org.scalatestplus" %% "scalacheck-1-14" % "3.2.2.0" % "test"
     )
   )
+
+lazy val scalapb = (project in file("modules/scalapb"))
+  .settings(
+    name := "calypso-scalapb",
+    description := "calypso scalapb",
+    libraryDependencies ++= List(
+      "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.0"
+    )
+  )
+  .dependsOn(core)
+
+lazy val scalapbTests = (project in file("modules/scalapb-tests"))
+  .settings(
+    name := "calypso-scalapb-tests",
+    description := "calypso scalapb tests",
+    libraryDependencies ++= List(
+      "com.github.alexarchambault" %% "scalacheck-shapeless_1.15" % "1.3.0"  % "test",
+      "eu.timepit"                 %% "refined-scalacheck"        % "0.9.27" % "test",
+      "org.typelevel"              %% "discipline-scalatest"      % "2.1.5"  % "test"
+    ),
+    publish / skip := true
+  )
+  .dependsOn(scalapb, testing)
 
 lazy val testing = (project in file("modules/testing"))
   .settings(
