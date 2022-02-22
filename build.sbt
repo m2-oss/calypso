@@ -76,7 +76,7 @@ lazy val scalapb = (project in file("modules/scalapb"))
     name := "calypso-scalapb",
     description := "calypso scalapb",
     libraryDependencies ++= List(
-      "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.0"
+      "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.9"
     )
   )
   .dependsOn(core)
