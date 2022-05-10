@@ -62,7 +62,7 @@ lazy val core = (project in file("modules/core"))
     name := "calypso-core",
     description := "calypso core",
     libraryDependencies ++= List(
-      "eu.timepit"        %% "refined"         % "0.9.27",
+      "eu.timepit"        %% "refined"         % "0.9.29",
       "org.mongodb"        % "bson"            % "4.2.3",
       "org.typelevel"     %% "cats-core"       % "2.6.1",
       "com.ironcorelabs"  %% "cats-scalatest"  % "3.1.1"   % "test",
@@ -87,7 +87,7 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
     description := "calypso scalapb tests",
     libraryDependencies ++= List(
       "com.github.alexarchambault" %% "scalacheck-shapeless_1.15" % "1.3.0"  % "test",
-      "eu.timepit"                 %% "refined-scalacheck"        % "0.9.27" % "test",
+      "eu.timepit"                 %% "refined-scalacheck"        % "0.9.29" % "test",
       "org.typelevel"              %% "discipline-scalatest"      % "2.1.5"  % "test"
     ),
     publish / skip := true
@@ -110,7 +110,7 @@ lazy val tests = (project in file("modules/tests"))
     description := "calypso tests",
     libraryDependencies ++= List(
       "com.github.alexarchambault" %% "scalacheck-shapeless_1.15" % "1.3.0"  % "test",
-      "eu.timepit"                 %% "refined-scalacheck"        % "0.9.27" % "test",
+      "eu.timepit"                 %% "refined-scalacheck"        % "0.9.29" % "test",
       "org.typelevel"              %% "discipline-scalatest"      % "2.1.5"  % "test"
     ),
     publish / skip := true
