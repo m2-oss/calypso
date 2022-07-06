@@ -88,7 +88,7 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
     libraryDependencies ++= List(
       "com.github.alexarchambault" %% "scalacheck-shapeless_1.15" % "1.3.0"  % "test",
       "eu.timepit"                 %% "refined-scalacheck"        % "0.9.27" % "test",
-      "org.typelevel"              %% "discipline-scalatest"      % "2.1.5"  % "test"
+      "org.typelevel"              %% "discipline-scalatest"      % "2.2.0"  % "test"
     ),
     publish / skip := true
   )
@@ -111,7 +111,7 @@ lazy val tests = (project in file("modules/tests"))
     libraryDependencies ++= List(
       "com.github.alexarchambault" %% "scalacheck-shapeless_1.15" % "1.3.0"  % "test",
       "eu.timepit"                 %% "refined-scalacheck"        % "0.9.27" % "test",
-      "org.typelevel"              %% "discipline-scalatest"      % "2.1.5"  % "test"
+      "org.typelevel"              %% "discipline-scalatest"      % "2.2.0"  % "test"
     ),
     publish / skip := true
   )
