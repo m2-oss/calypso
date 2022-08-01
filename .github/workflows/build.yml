@@ -11,6 +11,6 @@ jobs:
         with:
           fetch-depth: 0
       - run: |
-          sbt compile
-          sbt test
+          sbt + compile
+          sbt + test
           sbt scalafmtCheckAll
