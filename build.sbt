@@ -100,7 +100,7 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
     description := "calypso scalapb tests",
     libraryDependencies ++= List(
       "eu.timepit"    %% "refined-scalacheck"   % "0.9.27" % "test",
-      "org.typelevel" %% "discipline-scalatest" % "2.1.5"  % "test"
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
     ),
     publish / skip     := true,
     crossScalaVersions := supportedScalaVersions
@@ -124,7 +124,7 @@ lazy val tests = (project in file("modules/tests"))
     description := "calypso tests",
     libraryDependencies ++= List(
       "eu.timepit"    %% "refined-scalacheck"   % "0.9.27" % "test",
-      "org.typelevel" %% "discipline-scalatest" % "2.1.5"  % "test"
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
     ),
     publish / skip     := true,
     crossScalaVersions := supportedScalaVersions
