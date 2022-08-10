@@ -32,7 +32,7 @@ trait CodecTests[A] extends Laws {
   ): RuleSet = new DefaultRuleSet(
     name = "codec",
     parent = None,
-    "roundTrip" -> Prop.forAll { a: A =>
+    "roundTrip" -> Prop.forAll { (a: A) =>
       catsLawsIsEqToProp(laws.codecRoundTrip(a))
     }
   )

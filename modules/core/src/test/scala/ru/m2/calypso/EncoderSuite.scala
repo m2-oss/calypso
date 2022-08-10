@@ -11,7 +11,7 @@ import scala.collection.immutable.SortedMap
 class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers {
 
   property("encodeMap preserve insertion order") {
-    forAll { m: Map[Int, Long] =>
+    forAll { (m: Map[Int, Long]) =>
       val expected = Bson.of(
         m.foldLeft(List.empty[(String, BsonValue)]) { case (xs, (k, v)) =>
           (k.asKey, v.asBson) :: xs
@@ -22,7 +22,7 @@ class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with 
   }
 
   property("encodeSortedMap preserve insertion order") {
-    forAll { m: SortedMap[Int, Long] =>
+    forAll { (m: SortedMap[Int, Long]) =>
       val expected = Bson.of(
         m.foldLeft(List.empty[(String, BsonValue)]) { case (xs, (k, v)) =>
           (k.asKey, v.asBson) :: xs
