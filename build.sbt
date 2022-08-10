@@ -103,7 +103,7 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
       "org.typelevel" %% "discipline-scalatest" % "2.1.5"  % "test"
     ),
     publish / skip     := true,
-    crossScalaVersions := Nil
+    crossScalaVersions := supportedScalaVersions
   )
   .dependsOn(scalapb, testing)
 
@@ -127,6 +127,6 @@ lazy val tests = (project in file("modules/tests"))
       "org.typelevel" %% "discipline-scalatest" % "2.1.5"  % "test"
     ),
     publish / skip     := true,
-    crossScalaVersions := Nil
+    crossScalaVersions := supportedScalaVersions
   )
   .dependsOn(core, testing)
