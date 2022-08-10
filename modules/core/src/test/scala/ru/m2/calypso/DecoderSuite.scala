@@ -1,6 +1,5 @@
 package ru.m2.calypso
 
-import cats.scalatest.EitherMatchers
 import cats.syntax.either._
 import org.bson.{BsonInt32, BsonInt64, BsonString}
 import org.scalacheck.Arbitrary
@@ -10,29 +9,25 @@ import org.scalatest.propspec.AnyPropSpec
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import ru.m2.calypso.syntax._
 
-class DecoderSuite
-    extends AnyPropSpec
-    with ScalaCheckDrivenPropertyChecks
-    with Matchers
-    with EitherMatchers {
+class DecoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers {
 
   import DecoderSuite._
 
   property("decode lhs") {
-    forAll { s: BsonString =>
+    forAll { (s: BsonString) =>
       decodeStringOrInt(s).shouldBe(s.as[String].map(_.asLeft))
     }
   }
 
   property("decode rhs") {
-    forAll { i32: BsonInt32 =>
+    forAll { (i32: BsonInt32) =>
       decodeStringOrInt(i32).shouldBe(i32.as[Int].map(_.asRight))
     }
   }
 
   property("decode failure") {
-    forAll { i64: BsonInt64 =>
-      decodeStringOrInt(i64).shouldBe(left)
+    forAll { (i64: BsonInt64) =>
+      decodeStringOrInt(i64).isLeft.shouldBe(true)
     }
   }
 
