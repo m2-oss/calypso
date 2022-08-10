@@ -1,12 +1,14 @@
 package ru.m2.calypso
 
 import cats.Eq
-import org.scalacheck.ScalacheckShapeless._
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
 import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 import ru.m2.calypso.syntax._
 import ru.m2.calypso.testing.CodecTests
+import org.scalacheck.Arbitrary
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.Gen
 
 class CoproductCodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
   import CoproductCodecSuite._
@@ -36,5 +38,9 @@ object CoproductCodecSuite {
   implicit val decodeA: Decoder[A]       = Decoder.forProduct1("i")(A.apply)
   implicit val decodeB: Decoder[B]       = Decoder.forProduct1("s")(B.apply)
   implicit val decodeAorB: Decoder[AorB] = Decoder.forCoproduct2[AorB, A, B]("A", "B")
+
+  implicit val arbAorB: Arbitrary[AorB] = Arbitrary(
+    Gen.oneOf(arbitrary[Int].map(A.apply), arbitrary[String].map(B.apply))
+  )
 
 }

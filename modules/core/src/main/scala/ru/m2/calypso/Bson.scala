@@ -22,8 +22,8 @@ object Bson {
     bson
   }
 
-  /** If the value is an expression, $literal does not evaluate the expression
-    * but instead returns the unparsed expression.
+  /** If the value is an expression, literal does not evaluate the expression but instead returns
+    * the unparsed expression.
     *
     * https://docs.mongodb.com/manual/reference/operator/aggregation/literal/
     */

@@ -7,7 +7,7 @@ import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 class BsonSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers {
 
   property("Bson.obj skips null value") {
-    forAll { k: String =>
+    forAll { (k: String) =>
       Bson.obj(k -> Bson.nullValue).shouldBe(Bson.empty)
     }
   }
