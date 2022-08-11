@@ -112,7 +112,7 @@ lazy val testing = (project in file("modules/testing"))
     name        := "calypso-testing",
     description := "calypso testing",
     libraryDependencies ++= List(
-      "org.typelevel" %% "cats-laws" % "2.6.1"
+      "org.typelevel" %% "cats-laws" % "2.8.0"
     ),
     crossScalaVersions := supportedScalaVersions
   )
