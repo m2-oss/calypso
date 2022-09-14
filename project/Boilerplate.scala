@@ -10,14 +10,10 @@ object Boilerplate {
     22
 
   private sealed trait BoilerplateFile {
-    def filename: String
-
     def generateFileContents(): List[String]
   }
 
   private final case object ProductDecoders extends BoilerplateFile {
-    override final val filename: String = "ProductDecoders"
-
     override def generateFileContents(): List[String] = {
       def generateProductDecoder(n: Int): List[String] = {
         val parameters = letters.take(n)
@@ -45,8 +41,6 @@ object Boilerplate {
   }
 
   private final case object CoproductDecoders extends BoilerplateFile {
-    override final val filename: String = "CoproductDecoders"
-
     override def generateFileContents(): List[String] = {
       def generateCoproductDecoder(n: Int): List[String] = {
         val parameters = letters.take(n)
@@ -76,6 +70,33 @@ object Boilerplate {
     }
   }
 
+  private final case object ProductEncoders extends BoilerplateFile {
+    override def generateFileContents(): List[String] = {
+      def generateCoproductDecoder(n: Int): List[String] = {
+        val parameters = letters.take(n)
+
+        s"final def forProduct${n}[A, ${parameters.map(l => s"${l} : Encoder").mkString(", ")}]" ::
+        s"(${parameters.map(l => s"n${l.toLower}: String").mkString(", ")})" ::
+        s"(fun: A => (${parameters.mkString(", ")})): Encoder[A] =" ::
+        "Encoder.instance { a =>" ::
+        s"val (${parameters.map(_.toLower).mkString(", ")}) = fun(a)" ::
+        "Bson.obj(" ::
+        parameters.map(l => s"n${l.toLower} -> ${l.toLower}.asBson,") :::
+        ")" ::
+        "}" ::
+        Nil
+      }
+
+      "package ru.m2.calypso.boilerplate" ::
+      "import ru.m2.calypso.{Bson, Encoder}" ::
+      "import ru.m2.calypso.syntax._" ::
+      "trait ProductEncoders {" ::
+      List.tabulate(generateUpTo)(n => generateCoproductDecoder(n + 1)).flatten :::
+      "}" ::
+      Nil
+    }
+  }
+
   val generatorTask = Def.task {
     val log = streams.value.log
 
@@ -89,10 +110,11 @@ object Boilerplate {
 
         Set(
           ProductDecoders,
-          CoproductDecoders
+          CoproductDecoders,
+          ProductEncoders
         ).map { boilerplateFile =>
           // Save the boilerplate file to the managed sources dir.
-          val file = (Compile / sourceManaged).value / "boilerplate" / s"${boilerplateFile.filename}.scala"
+          val file = (Compile / sourceManaged).value / "boilerplate" / s"${boilerplateFile}.scala"
           log.log(Level.Info, s"Generating file ${file}")
 
           IO.writeLines(file, lines = boilerplateFile.generateFileContents())

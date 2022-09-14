@@ -4,7 +4,7 @@ import cats.data.NonEmptyList
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.string.Uuid
 import org.bson.BsonValue
-import ru.m2.calypso.boilerplate.{CoproductEncoder, ProductEncoder}
+import ru.m2.calypso.boilerplate._
 import ru.m2.calypso.syntax._
 
 import java.time.Instant
@@ -20,7 +20,7 @@ trait Encoder[A] {
     }
 }
 
-object Encoder extends ProductEncoder with CoproductEncoder {
+object Encoder extends ProductEncoders with CoproductEncoder {
   def apply[A](implicit instance: Encoder[A]): Encoder[A] = instance
 
   def instance[A](f: A => BsonValue): Encoder[A] = f(_)
