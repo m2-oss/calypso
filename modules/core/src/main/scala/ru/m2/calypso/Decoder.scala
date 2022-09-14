@@ -7,7 +7,7 @@ import eu.timepit.refined.api.{Refined, Validate}
 import eu.timepit.refined.refineV
 import eu.timepit.refined.string.Uuid
 import org.bson._
-import ru.m2.calypso.boilerplate._
+import ru.m2.calypso.boilerplate.{CoproductDecoders, ProductDecoders}
 import ru.m2.calypso.syntax._
 
 import java.time.Instant
