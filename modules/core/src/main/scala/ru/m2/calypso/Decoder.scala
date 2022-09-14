@@ -35,7 +35,7 @@ trait Decoder[A] {
 
 }
 
-object Decoder extends ProductDecoders with CoproductDecoder {
+object Decoder extends ProductDecoders with CoproductDecoders {
   def apply[A](implicit instance: Decoder[A]): Decoder[A] = instance
 
   def instance[A](f: BsonValue => Either[String, A]): Decoder[A] = f(_)
