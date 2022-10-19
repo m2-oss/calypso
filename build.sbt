@@ -1,4 +1,4 @@
-val scala2Version = "2.13.8"
+val scala2Version = "2.13.10"
 val scala3Version = "3.1.3"
 
 val supportedScalaVersions = List(scala3Version, scala2Version)
