@@ -78,7 +78,7 @@ lazy val core = (project in file("modules/core"))
       "org.mongodb"        % "bson"            % "4.2.3",
       "org.typelevel"     %% "cats-core"       % "2.8.0",
       "org.scalatest"     %% "scalatest"       % "3.2.13"   % "test",
-      "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
+      "org.scalatestplus" %% "scalacheck-1-16" % "3.2.14.0" % "test"
     ),
     crossScalaVersions := supportedScalaVersions
   )
