@@ -80,7 +80,8 @@ lazy val core = (project in file("modules/core"))
       "org.scalatest"     %% "scalatest"       % "3.2.13"   % "test",
       "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
     ),
-    crossScalaVersions := supportedScalaVersions
+    crossScalaVersions := supportedScalaVersions,
+    Compile / sourceGenerators += Boilerplate.generatorTask.taskValue
   )
 
 lazy val scalapb = (project in file("modules/scalapb"))
