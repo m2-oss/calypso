@@ -77,10 +77,11 @@ lazy val core = (project in file("modules/core"))
       "eu.timepit"        %% "refined"         % "0.10.1",
       "org.mongodb"        % "bson"            % "4.2.3",
       "org.typelevel"     %% "cats-core"       % "2.8.0",
-      "org.scalatest"     %% "scalatest"       % "3.2.13"   % "test",
+      "org.scalatest"     %% "scalatest"       % "3.2.15"   % "test",
       "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
     ),
-    crossScalaVersions := supportedScalaVersions
+    crossScalaVersions := supportedScalaVersions,
+    Compile / sourceGenerators += Boilerplate.generatorTask.taskValue
   )
 
 lazy val scalapb = (project in file("modules/scalapb"))

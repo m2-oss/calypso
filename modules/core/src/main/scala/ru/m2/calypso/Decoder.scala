@@ -7,7 +7,7 @@ import eu.timepit.refined.api.{Refined, Validate}
 import eu.timepit.refined.refineV
 import eu.timepit.refined.string.Uuid
 import org.bson._
-import ru.m2.calypso.boilerplate.{CoproductDecoder, ProductDecoder}
+import ru.m2.calypso.boilerplate.{CoproductDecoders, ProductDecoders}
 import ru.m2.calypso.syntax._
 
 import java.time.Instant
@@ -35,7 +35,7 @@ trait Decoder[A] {
 
 }
 
-object Decoder extends ProductDecoder with CoproductDecoder {
+object Decoder extends ProductDecoders with CoproductDecoders {
   def apply[A](implicit instance: Decoder[A]): Decoder[A] = instance
 
   def instance[A](f: BsonValue => Either[String, A]): Decoder[A] = f(_)
