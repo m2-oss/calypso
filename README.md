@@ -1,6 +1,6 @@
 # calypso
 
-[![build](https://github.com/m2-oss/calypso/workflows/build/badge.svg)](https://github.com/m2-oss/calypso/actions)
+[![build](https://github.com/m2-oss/calypso/actions/workflows/ci.yml/badge.svg)](https://github.com/m2-oss/calypso/actions)
 [![Maven Central](https://img.shields.io/maven-central/v/ru.m2/calypso-core_2.13)](https://maven-badges.herokuapp.com/maven-central/ru.m2/calypso-core_2.13)
 
 A BSON library based on `org.bson`. Encoder and Decoder type classes with instances for common types.
@@ -47,6 +47,18 @@ cats.data.NonEmptyList
 
 ### Refined
 Codecs for [refined](https://github.com/fthomas/refined) types are derived, so if you have `Encoder[A]`, then you have `Encoder[A Refined P]` (where `P` is a predicate) for free. The same for decoders, so having `Decoder[A]` in implicit scope automatically gives you `Decoder[A Refined P]`.
+
+To use calypso-refined in an existing sbt project, add the following dependencies to your build.sbt:
+```scala
+libraryDependencies += "ru.m2" %% "calypso-refined" % "<version>"
+```
+```scala
+import eu.timepit.refined.types.string.NonEmptyString
+import ru.m2.calypso.refined._
+import ru.m2.calypso.syntax._
+
+NonEmptyString("Text").asBson // BsonString{value='Text'}
+```
 
 ### Product type (case class)
 It is possible to construct codecs for [product types](https://en.wikipedia.org/wiki/Product_type) (case classes) using `forProductN` helper methods if you have codecs for each of its elements.

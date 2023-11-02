@@ -1,7 +1,5 @@
 package ru.m2.calypso
 
-import eu.timepit.refined.api.Refined
-
 trait KeyEncoder[A] {
   def apply(key: A): String
 
@@ -19,7 +17,4 @@ object KeyEncoder {
   implicit val encodeKeyString: KeyEncoder[String] = KeyEncoder.instance(identity)
 
   implicit val encodeKeyInt: KeyEncoder[Int] = KeyEncoder.instance(_.toString)
-
-  implicit def encodeRefined[A: KeyEncoder, P]: KeyEncoder[A Refined P] =
-    KeyEncoder[A].contramap(_.value)
 }
