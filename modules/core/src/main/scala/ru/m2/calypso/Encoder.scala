@@ -16,7 +16,7 @@ trait Encoder[A]:
     b => apply(f(b))
 
 object Encoder extends ProductEncoders:
-  def apply[A](implicit instance: Encoder[A]): Encoder[A] = instance
+  def apply[A](using encoder: Encoder[A]): Encoder[A] = encoder
 
   def instance[A](f: A => BsonValue): Encoder[A] = f(_)
 
