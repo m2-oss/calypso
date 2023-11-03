@@ -81,7 +81,7 @@ lazy val core = (project in file("modules/core"))
       "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
     ),
     Compile / sourceGenerators += Boilerplate.generatorTask.taskValue,
-    Compile / unmanagedSourceDirectories += baseDirectory.value / "target/scala-3.3.1/src_managed"
+    Compile / unmanagedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersion.value}/src_managed"
   )
 
 lazy val tests = (project in file("modules/tests"))
