@@ -12,15 +12,15 @@ import scala.collection.immutable.{SortedMap, SortedSet}
 trait Encoder[A]:
   def apply(a: A): BsonValue
 
-  final def contramap[B](f: B => A): Encoder[B] =
+  def contramap[B](f: B => A): Encoder[B] =
     b => apply(f(b))
 
 object Encoder extends ProductEncoders:
-  def apply[A](using encoder: Encoder[A]): Encoder[A] = encoder
+  def apply[A: Encoder]: Encoder[A] = summon
 
   def instance[A](f: A => BsonValue): Encoder[A] = f(_)
 
-  final def forCoproduct[A](f: A => (String, BsonValue)): Encoder[A] =
+  def forCoproduct[A](f: A => (String, BsonValue)): Encoder[A] =
     Encoder.forProduct2("tag", "value")(f)
 
   given Encoder[BsonValue]   = Encoder.instance(identity)
