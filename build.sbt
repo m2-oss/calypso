@@ -51,6 +51,12 @@ ThisBuild / developers := List(
     name = "Bogdan Sapizhak",
     email = "gohcbro@gmail.com",
     url = url("https://github.com/sapizhak")
+  ),
+  Developer (
+    id = "gaponenko-andrei",
+    name = "Andrei Gaponenko",
+    email = "agp32.in@gmail.com",
+    url = url("https://github.com/gaponenko-andrei")
   )
 )
 ThisBuild / licenses := List(
