@@ -1,8 +1,6 @@
 package ru.m2.calypso
 
 import cats.syntax.either._
-import eu.timepit.refined.api.{Refined, Validate}
-import eu.timepit.refined.refineV
 
 trait KeyDecoder[A] {
   def apply(key: String): Either[String, A]
@@ -28,8 +26,4 @@ object KeyDecoder {
   implicit val decodeKeyInt: KeyDecoder[Int] = KeyDecoder.instance { s =>
     s.toIntOption.toRight(s"KeyDecoder[Int].failure: [$s]")
   }
-
-  implicit def decodeRefined[A: KeyDecoder, P](implicit
-      v: Validate[A, P]
-  ): KeyDecoder[A Refined P] = KeyDecoder[A].emap(refineV(_))
 }

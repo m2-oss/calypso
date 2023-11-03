@@ -1,17 +1,10 @@
 package ru.m2.calypso.scalapb
 
 import cats.Eq
-import cats.syntax.eq._
 import com.google.protobuf.timestamp.Timestamp
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.collection.NonEmpty
-import eu.timepit.refined.string.Uuid
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.{Arbitrary, Gen}
-import scalapb.GeneratedEnum
-import scalapb.GeneratedEnumCompanion
-import scalapb.UnknownFieldSet
 import org.scalacheck.Gen.Choose.chooseInstant
+import org.scalacheck.{Arbitrary, Gen}
+import scalapb.{GeneratedEnum, GeneratedEnumCompanion, UnknownFieldSet}
 
 import java.time.Instant
 

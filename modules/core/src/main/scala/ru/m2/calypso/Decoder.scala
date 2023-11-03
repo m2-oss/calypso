@@ -3,9 +3,6 @@ package ru.m2.calypso
 import cats.data.NonEmptyList
 import cats.syntax.either._
 import cats.syntax.traverse._
-import eu.timepit.refined.api.{Refined, Validate}
-import eu.timepit.refined.refineV
-import eu.timepit.refined.string.Uuid
 import org.bson._
 import ru.m2.calypso.boilerplate.{CoproductDecoders, ProductDecoders}
 import ru.m2.calypso.syntax._
@@ -140,9 +137,6 @@ object Decoder extends ProductDecoders with CoproductDecoders {
   implicit def decodeEither[A: Decoder, B: Decoder]: Decoder[Either[A, B]] =
     Decoder.forCoproduct2("left", "right")(Decoder[A].map(_.asLeft), Decoder[B].map(_.asRight))
 
-  implicit def decodeRefined[A: Decoder, P](implicit v: Validate[A, P]): Decoder[A Refined P] =
-    Decoder[A].emap(refineV(_))
-
   implicit val decodeInstant: Decoder[Instant] =
     Decoder.instance { bson =>
       Either
@@ -158,12 +152,4 @@ object Decoder extends ProductDecoders with CoproductDecoders {
       } yield uuid
     }
 
-  implicit val decodeStringRefinedUuid: Decoder[String Refined Uuid] =
-    Decoder.instance { bson =>
-      for {
-        b  <- Either.catchNonFatal(bson.asBinary()).leftMap(_.getMessage)
-        s  <- Either.catchNonFatal(b.asUuid()).bimap(_.getMessage, _.toString)
-        sr <- refineV[Uuid](s)
-      } yield sr
-    }
 }

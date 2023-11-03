@@ -1,8 +1,6 @@
 package ru.m2.calypso
 
 import cats.data.NonEmptyList
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.string.Uuid
 import org.bson.BsonValue
 import ru.m2.calypso.boilerplate.ProductEncoders
 import ru.m2.calypso.syntax._
@@ -87,16 +85,10 @@ object Encoder extends ProductEncoders {
       case Right(b) => "right" -> b.asBson
     }
 
-  implicit def encodeRefined[A: Encoder, P]: Encoder[A Refined P] =
-    Encoder[A].contramap(_.value)
-
   implicit val encodeInstant: Encoder[Instant] =
     Encoder.instance(t => Bson.dateTime(t.toEpochMilli))
 
   implicit val encodeUUID: Encoder[UUID] =
-    Encoder.instance(Bson.uuid)
-
-  implicit val encodeStringRefinedUuid: Encoder[String Refined Uuid] =
     Encoder.instance(Bson.uuid)
 
   final def forCoproduct[A](f: A => (String, BsonValue)): Encoder[A] =

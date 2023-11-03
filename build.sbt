@@ -67,14 +67,13 @@ lazy val calypso = (project in file("."))
     crossScalaVersions := Nil,
     publish / skip     := true
   )
-  .aggregate(core, scalapb, testing, tests, scalapbTests)
+  .aggregate(core, tests, refined, refinedTests, scalapb, scalapbTests, testing)
 
 lazy val core = (project in file("modules/core"))
   .settings(
     name        := "calypso-core",
     description := "calypso core",
     libraryDependencies ++= List(
-      "eu.timepit"        %% "refined"         % "0.10.1",
       "org.mongodb"        % "bson"            % "4.2.3",
       "org.typelevel"     %% "cats-core"       % "2.8.0",
       "org.scalatest"     %% "scalatest"       % "3.2.15"   % "test",
@@ -83,6 +82,42 @@ lazy val core = (project in file("modules/core"))
     crossScalaVersions := supportedScalaVersions,
     Compile / sourceGenerators += Boilerplate.generatorTask.taskValue
   )
+
+lazy val tests = (project in file("modules/tests"))
+  .settings(
+    name        := "calypso-tests",
+    description := "calypso tests",
+    libraryDependencies ++= List(
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0" % "test"
+    ),
+    publish / skip     := true,
+    crossScalaVersions := supportedScalaVersions
+  )
+  .dependsOn(core, testing)
+
+lazy val refined = (project in file("modules/refined"))
+  .settings(
+    name        := "calypso-refined",
+    description := "calypso refined",
+    libraryDependencies ++= List(
+      "eu.timepit" %% "refined" % "0.10.1"
+    ),
+    crossScalaVersions := supportedScalaVersions
+  )
+  .dependsOn(core)
+
+lazy val refinedTests = (project in file("modules/refined-tests"))
+  .settings(
+    name        := "calypso-refined-tests",
+    description := "calypso refined tests",
+    libraryDependencies ++= List(
+      "eu.timepit"    %% "refined-scalacheck"   % "0.10.1" % "test",
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
+    ),
+    publish / skip     := true,
+    crossScalaVersions := supportedScalaVersions
+  )
+  .dependsOn(refined, testing)
 
 lazy val scalapb = (project in file("modules/scalapb"))
   .settings(
@@ -100,8 +135,7 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
     name        := "calypso-scalapb-tests",
     description := "calypso scalapb tests",
     libraryDependencies ++= List(
-      "eu.timepit"    %% "refined-scalacheck"   % "0.10.1" % "test",
-      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0" % "test"
     ),
     publish / skip     := true,
     crossScalaVersions := supportedScalaVersions
@@ -118,16 +152,3 @@ lazy val testing = (project in file("modules/testing"))
     crossScalaVersions := supportedScalaVersions
   )
   .dependsOn(core)
-
-lazy val tests = (project in file("modules/tests"))
-  .settings(
-    name        := "calypso-tests",
-    description := "calypso tests",
-    libraryDependencies ++= List(
-      "eu.timepit"    %% "refined-scalacheck"   % "0.10.1" % "test",
-      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
-    ),
-    publish / skip     := true,
-    crossScalaVersions := supportedScalaVersions
-  )
-  .dependsOn(core, testing)
