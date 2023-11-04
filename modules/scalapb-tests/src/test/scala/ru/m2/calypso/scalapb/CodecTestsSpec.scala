@@ -5,11 +5,11 @@ import com.google.protobuf.timestamp.Timestamp
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
 import org.typelevel.discipline.scalatest.FunSuiteDiscipline
-import ru.m2.calypso.scalapb.MissingInstances._
-import ru.m2.calypso.scalapb.GeneratedEnumDecoder._
-import ru.m2.calypso.scalapb.GeneratedEnumEncoder._
-import ru.m2.calypso.scalapb.TimestampDecoder._
-import ru.m2.calypso.scalapb.TimestampEncoder._
+import ru.m2.calypso.scalapb.MissingInstances.given
+import ru.m2.calypso.scalapb.GeneratedEnumDecoder.given
+import ru.m2.calypso.scalapb.GeneratedEnumEncoder.given
+import ru.m2.calypso.scalapb.TimestampDecoder.given
+import ru.m2.calypso.scalapb.TimestampEncoder.given
 import ru.m2.calypso.testing.CodecTests
 
 class CodecTestsSpec extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {

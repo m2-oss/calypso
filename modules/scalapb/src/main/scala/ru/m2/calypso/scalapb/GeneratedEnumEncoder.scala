@@ -5,7 +5,7 @@ import ru.m2.calypso.Encoder._
 import ru.m2.calypso.syntax._
 import scalapb.GeneratedEnum
 
-object GeneratedEnumEncoder {
-  implicit def encodeGeneratedEnum[A <: GeneratedEnum]: Encoder[A] =
+object GeneratedEnumEncoder:
+
+  given [A <: GeneratedEnum]: Encoder[A] =
     Encoder.instance(e => e.value.asBson)
-}

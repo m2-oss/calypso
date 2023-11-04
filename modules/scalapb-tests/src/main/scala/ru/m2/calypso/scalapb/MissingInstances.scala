@@ -8,16 +8,19 @@ import scalapb.{GeneratedEnum, GeneratedEnumCompanion, UnknownFieldSet}
 
 import java.time.Instant
 
-object MissingInstances {
-  private val NanosPerMilli    = 1000_000L
+object MissingInstances:
+
+  private val NanosPerMilli = 1000_000L
+
   private val MinTimestampDate = Instant.parse("0001-01-01T00:00:00Z")
+
   private val MaxTimestampDate = Instant.parse("9999-12-31T23:59:59Z")
 
-  implicit def eqGeneratedEnum[A <: GeneratedEnum]: Eq[A] = Eq.fromUniversalEquals
+  given [A <: GeneratedEnum]: Eq[A] = Eq.fromUniversalEquals
 
-  implicit val eqTimestamp: Eq[Timestamp] = Eq.fromUniversalEquals
+  given Eq[Timestamp] = Eq.fromUniversalEquals
 
-  implicit val arbTimestamp: Arbitrary[Timestamp] =
+  given Arbitrary[Timestamp] =
     Arbitrary(
       Gen
         .choose(MinTimestampDate, MaxTimestampDate)
@@ -28,12 +31,8 @@ object MissingInstances {
         }
     )
 
-  implicit val arbUnknownFieldSet: Arbitrary[UnknownFieldSet] =
+  given Arbitrary[UnknownFieldSet] =
     Arbitrary(Gen.const(scalapb.UnknownFieldSet.empty))
 
-  implicit def arbGeneratedEnum[A <: GeneratedEnum: GeneratedEnumCompanion]: Arbitrary[A] =
-    Arbitrary(
-      Gen.oneOf(implicitly[GeneratedEnumCompanion[A]].values)
-    )
-
-}
+  given [A <: GeneratedEnum](using GEC: GeneratedEnumCompanion[A]): Arbitrary[A] =
+    Arbitrary(Gen.oneOf(GEC.values))
