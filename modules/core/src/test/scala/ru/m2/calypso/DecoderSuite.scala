@@ -36,7 +36,7 @@ class DecoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with 
 object DecoderSuite {
 
   val decodeStringOrInt: Decoder[Either[String, Int]] =
-    Decoder.decodeString.map(_.asLeft).or(Decoder.decodeInt.map(_.asRight))
+    Decoder[String].map(_.asLeft).or(Decoder[Int].map(_.asRight))
 
   implicit val arbBsonString: Arbitrary[BsonString] = Arbitrary(arbitrary[String].map(Bson.string))
   implicit val arbBsonInt32: Arbitrary[BsonInt32]   = Arbitrary(arbitrary[Int].map(Bson.int32))
