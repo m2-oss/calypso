@@ -7,11 +7,10 @@ import ru.m2.calypso.Decoder
 
 import java.util.UUID
 
-trait RefinedDecoder {
+trait RefinedDecoder:
 
-  implicit def decodeRefined[A: Decoder, P](implicit v: Validate[A, P]): Decoder[A Refined P] =
+  given [A: Decoder, P](using Validate[A, P]): Decoder[A Refined P] =
     Decoder[A].emap(refineV(_))
 
-  implicit val decodeStringRefinedUuid: Decoder[String Refined Uuid] =
+  given Decoder[String Refined Uuid] =
     Decoder[UUID].emap(uuid => refineV(uuid.toString))
-}

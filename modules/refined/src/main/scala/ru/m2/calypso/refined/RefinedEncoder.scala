@@ -7,11 +7,10 @@ import ru.m2.calypso.Encoder
 
 import java.util.UUID
 
-trait RefinedEncoder {
+trait RefinedEncoder:
 
-  implicit def encodeRefined[A: Encoder, P]: Encoder[A Refined P] =
+  given [A: Encoder, P]: Encoder[A Refined P] =
     Encoder[A].contramap(_.value)
 
-  implicit val encodeStringRefinedUuid: Encoder[String Refined Uuid] =
-    Encoder.instance(s => new BsonBinary(UUID.fromString(s.value)))
-}
+  given Encoder[String Refined Uuid] =
+    Encoder[UUID].contramap(s => UUID.fromString(s.value))
