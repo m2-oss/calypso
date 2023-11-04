@@ -85,33 +85,39 @@ val record: Either[String, Record] = bson.as[Record] // Right(Record(1,John))
 Coproduct is also known as [ADT](https://en.wikipedia.org/wiki/Algebraic_data_type), sum, or [tagged union](https://en.wikipedia.org/wiki/Tagged_union). Not as ergonomic as product type, but it is possible to create codecs for coproduct types using `forCoproductN` helper methods.
 ```scala
 import org.bson.BsonValue
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 import ru.m2.calypso.{Decoder, Encoder}
 
-sealed trait AorB extends Product with Serializable
-object AorB {
-  final case class A(i: Int)    extends AorB
-  final case class B(s: String) extends AorB
-}
+enum AorB:
+  case A(i: Int)
+  case B(s: String)
 
-import AorB._
+object AorB:
 
-implicit val encodeA: Encoder[A] = Encoder.forProduct1("i")(_.i)
-implicit val encodeB: Encoder[B] = Encoder.forProduct1("s")(_.s)
-implicit val encodeAorB: Encoder[AorB] = Encoder.forCoproduct {
-  case a: A => "A" -> a.asBson
-  case b: B => "B" -> b.asBson
-}
+  import AorB.*
+  
+  given Encoder[A] = Encoder.forProduct1("i")(_.i)
+  given Encoder[B] = Encoder.forProduct1("s")(_.s)
+  given Encoder[AorB] = Encoder.forCoproduct {
+    case a: A => "A" -> a.asBson
+    case b: B => "B" -> b.asBson
+  }
+  
+  given Decoder[A]    = Decoder.forProduct1("i")(A.apply)
+  given Decoder[B]    = Decoder.forProduct1("s")(B.apply)
+  given Decoder[AorB] = Decoder.forCoproduct2[AorB, A, B]("A", "B")
 
-implicit val decodeA: Decoder[A]       = Decoder.forProduct1("i")(A.apply)
-implicit val decodeB: Decoder[B]       = Decoder.forProduct1("s")(B.apply)
-implicit val decodeAorB: Decoder[AorB] = Decoder.forCoproduct2[AorB, A, B]("A", "B")
+object Example:
 
-val aBson: BsonValue = (A(42): AorB).asBson      // {"tag": "A", "value": {"i": 42}}
-val bBson: BsonValue = (B("hello"): AorB).asBson // {"tag": "B", "value": {"s": "hello"}}
+  import AorB.*
 
-val a: Either[String, AorB] = aBson.as[AorB] // Right(A(42))
-val b: Either[String, AorB] = bBson.as[AorB] // Right(B(hello))
+  val aBson: BsonValue = (A(42): AorB).asBson      // {"tag": "A", "value": {"i": 42}}
+  val bBson: BsonValue = (B("hello"): AorB).asBson // {"tag": "B", "value": {"s": "hello"}}
+  
+  val a: Either[String, AorB] = aBson.as[AorB] // Right(A(42))
+  val b: Either[String, AorB] = bBson.as[AorB] // Right(B(hello))
+
+
 ```
 
 ### Derive codecs
