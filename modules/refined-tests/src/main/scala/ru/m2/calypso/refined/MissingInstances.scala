@@ -5,9 +5,8 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.string.Uuid
 import eu.timepit.refined.types.string.NonEmptyString
 
-object MissingInstances {
+object MissingInstances:
 
-  implicit val eqNonEmptyString: Eq[NonEmptyString] = Eq.fromUniversalEquals
+  given Eq[NonEmptyString] = Eq.fromUniversalEquals
 
-  implicit val eqStringRefinedUuid: Eq[String Refined Uuid] = Eq.fromUniversalEquals
-}
+  given Eq[String Refined Uuid] = Eq.fromUniversalEquals
