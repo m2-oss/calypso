@@ -122,21 +122,19 @@ object Example:
 
 ### Derive codecs
 
-Use existing codecs to derive complex ones.
+Use existing codecs to derive new ones.
 ```scala
 import org.bson.BsonValue
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 import ru.m2.calypso.{Decoder, Encoder}
 
-final case class UserId(value: Long) extends AnyVal
-object UserId {
-  implicit val encodeUserId: Encoder[UserId] = Encoder[Long].contramap(_.value)
-  implicit val decodeUserId: Decoder[UserId] = Decoder[Long].map(UserId.apply)
-}
+import java.time.{Instant, LocalDateTime, ZoneOffset}
 
-val bson: BsonValue = UserId(42).asBson // BsonInt64{value=42}
+given Encoder[LocalDateTime] = Encoder[Instant].contramap(_.toInstant(ZoneOffset.UTC))
+given Decoder[LocalDateTime] = Decoder[Instant].map(LocalDateTime.ofInstant(_, ZoneOffset.UTC))
 
-val userId: Either[String, UserId] = bson.as[UserId] // Right(UserId(42))
+val bson: BsonValue = LocalDateTime.of(1970, 1, 1, 0, 0, 0).asBson // BsonDateTime{value=0}
+val time: Either[String, LocalDateTime] = bson.as[LocalDateTime] // Right(1970-01-01T00:00)
 ```
 
 
