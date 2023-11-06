@@ -1,7 +1,5 @@
 package ru.m2.calypso
 
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.string.Uuid
 import org.bson._
 
 import java.util.UUID
@@ -45,8 +43,6 @@ object Bson {
   def string(s: String): BsonString = new BsonString(s)
 
   def binary(data: Array[Byte]): BsonBinary = new BsonBinary(data)
-
-  def uuid(s: String Refined Uuid): BsonBinary = new BsonBinary(UUID.fromString(s.value))
 
   def uuid(uuid: UUID): BsonBinary = new BsonBinary(uuid)
 

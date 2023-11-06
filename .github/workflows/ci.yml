@@ -6,28 +6,20 @@ on:
 jobs:
   build:
     name: Build and Test
-    strategy:
-      matrix:
-        scala: [3.1.3, 2.13.8]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout current branch (full)
         uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
-
       - name: Build project
-        run: sbt ++${{ matrix.scala }} test
+        run: sbt test
 
   scalafmt:
     name: Scalafmt
-    strategy:
-      matrix:
-        scala: [3.1.3, 2.13.8]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout current branch (fast)
         uses: actions/checkout@v3.0.2
-
       - name: Scalafmt
-        run: sbt ++${{ matrix.scala }} scalafmtCheckAll
+        run: sbt scalafmtCheckAll
