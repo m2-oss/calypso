@@ -2,10 +2,6 @@ package ru.m2.calypso
 
 import cats.data.NonEmptyList
 import cats.laws.discipline.arbitrary._
-import eu.timepit.refined.api.Refined
-import eu.timepit.refined.collection.NonEmpty
-import eu.timepit.refined.scalacheck.string._
-import eu.timepit.refined.string.Uuid
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
 import org.typelevel.discipline.scalatest.FunSuiteDiscipline
@@ -34,6 +30,4 @@ class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configurat
   checkAll("Codec[Array[Byte]]", CodecTests[Array[Byte]].codec)
   checkAll("Codec[Instant]", CodecTests[Instant].codec)
   checkAll("Codec[UUID]", CodecTests[UUID].codec)
-  checkAll("Codec[String Refined NonEmpty]", CodecTests[String Refined NonEmpty].codec)
-  checkAll("Codec[String Refined Uuid]", CodecTests[String Refined Uuid].codec)
 }
