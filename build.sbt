@@ -1,9 +1,4 @@
-val scala2Version = "2.13.8"
-val scala3Version = "3.1.3"
-
-val supportedScalaVersions = List(scala3Version, scala2Version)
-
-ThisBuild / scalaVersion := scala3Version
+ThisBuild / scalaVersion := "3.3.1"
 
 ThisBuild / organization         := "ru.m2"
 ThisBuild / organizationName     := "m2"
@@ -51,6 +46,12 @@ ThisBuild / developers := List(
     name = "Bogdan Sapizhak",
     email = "gohcbro@gmail.com",
     url = url("https://github.com/sapizhak")
+  ),
+  Developer(
+    id = "gaponenko-andrei",
+    name = "Andrei Gaponenko",
+    email = "agp32.in@gmail.com",
+    url = url("https://github.com/gaponenko-andrei")
   )
 )
 ThisBuild / licenses := List(
@@ -67,22 +68,54 @@ lazy val calypso = (project in file("."))
     crossScalaVersions := Nil,
     publish / skip     := true
   )
-  .aggregate(core, scalapb, testing, tests, scalapbTests)
+  .aggregate(core, tests, refined, refinedTests, scalapb, scalapbTests, testing)
 
 lazy val core = (project in file("modules/core"))
   .settings(
     name        := "calypso-core",
     description := "calypso core",
     libraryDependencies ++= List(
-      "eu.timepit"        %% "refined"         % "0.10.1",
       "org.mongodb"        % "bson"            % "4.2.3",
       "org.typelevel"     %% "cats-core"       % "2.8.0",
       "org.scalatest"     %% "scalatest"       % "3.2.15"   % "test",
       "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
     ),
-    crossScalaVersions := supportedScalaVersions,
-    Compile / sourceGenerators += Boilerplate.generatorTask.taskValue
+    Compile / sourceGenerators += Boilerplate.generatorTask.taskValue,
+    Compile / unmanagedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersion.value}/src_managed"
   )
+
+lazy val tests = (project in file("modules/tests"))
+  .settings(
+    name        := "calypso-tests",
+    description := "calypso tests",
+    libraryDependencies ++= List(
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0" % "test"
+    ),
+    publish / skip := true
+  )
+  .dependsOn(core, testing)
+
+lazy val refined = (project in file("modules/refined"))
+  .settings(
+    name        := "calypso-refined",
+    description := "calypso refined",
+    libraryDependencies ++= List(
+      "eu.timepit" %% "refined" % "0.10.1"
+    )
+  )
+  .dependsOn(core)
+
+lazy val refinedTests = (project in file("modules/refined-tests"))
+  .settings(
+    name        := "calypso-refined-tests",
+    description := "calypso refined tests",
+    libraryDependencies ++= List(
+      "eu.timepit"    %% "refined-scalacheck"   % "0.10.1" % "test",
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
+    ),
+    publish / skip := true
+  )
+  .dependsOn(refined, testing)
 
 lazy val scalapb = (project in file("modules/scalapb"))
   .settings(
@@ -90,8 +123,7 @@ lazy val scalapb = (project in file("modules/scalapb"))
     description := "calypso scalapb",
     libraryDependencies ++= List(
       "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.11"
-    ),
-    crossScalaVersions := supportedScalaVersions
+    )
   )
   .dependsOn(core)
 
@@ -100,11 +132,9 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
     name        := "calypso-scalapb-tests",
     description := "calypso scalapb tests",
     libraryDependencies ++= List(
-      "eu.timepit"    %% "refined-scalacheck"   % "0.10.1" % "test",
-      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0" % "test"
     ),
-    publish / skip     := true,
-    crossScalaVersions := supportedScalaVersions
+    publish / skip := true
   )
   .dependsOn(scalapb, testing)
 
@@ -114,20 +144,6 @@ lazy val testing = (project in file("modules/testing"))
     description := "calypso testing",
     libraryDependencies ++= List(
       "org.typelevel" %% "cats-laws" % "2.8.0"
-    ),
-    crossScalaVersions := supportedScalaVersions
+    )
   )
   .dependsOn(core)
-
-lazy val tests = (project in file("modules/tests"))
-  .settings(
-    name        := "calypso-tests",
-    description := "calypso tests",
-    libraryDependencies ++= List(
-      "eu.timepit"    %% "refined-scalacheck"   % "0.10.1" % "test",
-      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
-    ),
-    publish / skip     := true,
-    crossScalaVersions := supportedScalaVersions
-  )
-  .dependsOn(core, testing)
