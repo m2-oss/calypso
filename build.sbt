@@ -77,7 +77,7 @@ lazy val core = (project in file("modules/core"))
     libraryDependencies ++= List(
       "org.mongodb"        % "bson"            % "4.2.3",
       "org.typelevel"     %% "cats-core"       % "2.10.0",
-      "org.scalatest"     %% "scalatest"       % "3.2.15"   % "test",
+      "org.scalatest"     %% "scalatest"       % "3.2.17"   % "test",
       "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
     ),
     Compile / sourceGenerators += Boilerplate.generatorTask.taskValue,
