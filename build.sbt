@@ -76,7 +76,7 @@ lazy val core = (project in file("modules/core"))
     description := "calypso core",
     libraryDependencies ++= List(
       "org.mongodb"        % "bson"            % "4.2.3",
-      "org.typelevel"     %% "cats-core"       % "2.8.0",
+      "org.typelevel"     %% "cats-core"       % "2.10.0",
       "org.scalatest"     %% "scalatest"       % "3.2.15"   % "test",
       "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
     ),
@@ -100,7 +100,7 @@ lazy val refined = (project in file("modules/refined"))
     name        := "calypso-refined",
     description := "calypso refined",
     libraryDependencies ++= List(
-      "eu.timepit" %% "refined" % "0.10.1"
+      "eu.timepit" %% "refined" % "0.10.3"
     )
   )
   .dependsOn(core)
@@ -110,7 +110,7 @@ lazy val refinedTests = (project in file("modules/refined-tests"))
     name        := "calypso-refined-tests",
     description := "calypso refined tests",
     libraryDependencies ++= List(
-      "eu.timepit"    %% "refined-scalacheck"   % "0.10.1" % "test",
+      "eu.timepit"    %% "refined-scalacheck"   % "0.10.3" % "test",
       "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
     ),
     publish / skip := true
@@ -143,7 +143,7 @@ lazy val testing = (project in file("modules/testing"))
     name        := "calypso-testing",
     description := "calypso testing",
     libraryDependencies ++= List(
-      "org.typelevel" %% "cats-laws" % "2.8.0"
+      "org.typelevel" %% "cats-laws" % "2.10.0"
     )
   )
   .dependsOn(core)
