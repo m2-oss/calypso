@@ -1,6 +1,6 @@
 # calypso
 
-[![build](https://github.com/m2-oss/calypso/workflows/build/badge.svg)](https://github.com/m2-oss/calypso/actions)
+[![build](https://github.com/m2-oss/calypso/actions/workflows/ci.yml/badge.svg)](https://github.com/m2-oss/calypso/actions)
 [![Maven Central](https://img.shields.io/maven-central/v/ru.m2/calypso-core_2.13)](https://maven-badges.herokuapp.com/maven-central/ru.m2/calypso-core_2.13)
 
 A BSON library based on `org.bson`. Encoder and Decoder type classes with instances for common types.
@@ -8,7 +8,7 @@ A BSON library based on `org.bson`. Encoder and Decoder type classes with instan
 ### Usage
 
 To use calypso in an existing sbt project, add the following dependencies to your build.sbt:
-```scala
+```scala 3
 libraryDependencies += "ru.m2" %% "calypso-core" % "<version>"
 ```
 The most current release can be found in the maven badge at the top of this readme.
@@ -16,7 +16,7 @@ The most current release can be found in the maven badge at the top of this read
 ### Supported types
 
 #### Scala
-```scala
+```scala 3
 Unit
 Boolean
 Int
@@ -35,22 +35,19 @@ Either[A, B]
 ```
 
 #### java
-```scala
+```scala 3
 java.time.Instant
 java.util.UUID
 ```
 
 #### cats
-```scala
+```scala 3
 cats.data.NonEmptyList
 ```
 
-### Refined
-Codecs for [refined](https://github.com/fthomas/refined) types are derived, so if you have `Encoder[A]`, then you have `Encoder[A Refined P]` (where `P` is a predicate) for free. The same for decoders, so having `Decoder[A]` in implicit scope automatically gives you `Decoder[A Refined P]`.
-
 ### Product type (case class)
 It is possible to construct codecs for [product types](https://en.wikipedia.org/wiki/Product_type) (case classes) using `forProductN` helper methods if you have codecs for each of its elements.
-```scala
+```scala 3
 import org.bson.BsonValue
 import ru.m2.calypso.syntax._
 import ru.m2.calypso.{Decoder, Encoder}
@@ -71,68 +68,86 @@ val record: Either[String, Record] = bson.as[Record] // Right(Record(1,John))
 
 ### Coproduct type (sealed trait hierarchy)
 Coproduct is also known as [ADT](https://en.wikipedia.org/wiki/Algebraic_data_type), sum, or [tagged union](https://en.wikipedia.org/wiki/Tagged_union). Not as ergonomic as product type, but it is possible to create codecs for coproduct types using `forCoproductN` helper methods.
-```scala
+```scala 3
 import org.bson.BsonValue
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 import ru.m2.calypso.{Decoder, Encoder}
 
-sealed trait AorB extends Product with Serializable
-object AorB {
-  final case class A(i: Int)    extends AorB
-  final case class B(s: String) extends AorB
-}
+enum AorB:
+  case A(i: Int)
+  case B(s: String)
 
-import AorB._
+object AorB:
 
-implicit val encodeA: Encoder[A] = Encoder.forProduct1("i")(_.i)
-implicit val encodeB: Encoder[B] = Encoder.forProduct1("s")(_.s)
-implicit val encodeAorB: Encoder[AorB] = Encoder.forCoproduct {
-  case a: A => "A" -> a.asBson
-  case b: B => "B" -> b.asBson
-}
+  import AorB.*
+  
+  given Encoder[A] = Encoder.forProduct1("i")(_.i)
+  given Encoder[B] = Encoder.forProduct1("s")(_.s)
+  given Encoder[AorB] = Encoder.forCoproduct {
+    case a: A => "A" -> a.asBson
+    case b: B => "B" -> b.asBson
+  }
+  
+  given Decoder[A]    = Decoder.forProduct1("i")(A.apply)
+  given Decoder[B]    = Decoder.forProduct1("s")(B.apply)
+  given Decoder[AorB] = Decoder.forCoproduct2[AorB, A, B]("A", "B")
 
-implicit val decodeA: Decoder[A]       = Decoder.forProduct1("i")(A.apply)
-implicit val decodeB: Decoder[B]       = Decoder.forProduct1("s")(B.apply)
-implicit val decodeAorB: Decoder[AorB] = Decoder.forCoproduct2[AorB, A, B]("A", "B")
+object Example:
 
-val aBson: BsonValue = (A(42): AorB).asBson      // {"tag": "A", "value": {"i": 42}}
-val bBson: BsonValue = (B("hello"): AorB).asBson // {"tag": "B", "value": {"s": "hello"}}
+  import AorB.*
 
-val a: Either[String, AorB] = aBson.as[AorB] // Right(A(42))
-val b: Either[String, AorB] = bBson.as[AorB] // Right(B(hello))
+  val aBson: BsonValue = (A(42): AorB).asBson      // {"tag": "A", "value": {"i": 42}}
+  val bBson: BsonValue = (B("hello"): AorB).asBson // {"tag": "B", "value": {"s": "hello"}}
+  
+  val a: Either[String, AorB] = aBson.as[AorB] // Right(A(42))
+  val b: Either[String, AorB] = bBson.as[AorB] // Right(B(hello))
+
+
 ```
 
 ### Derive codecs
 
-Use existing codecs to derive complex ones.
-```scala
+Use existing codecs to derive new ones.
+```scala 3
 import org.bson.BsonValue
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 import ru.m2.calypso.{Decoder, Encoder}
 
-final case class UserId(value: Long) extends AnyVal
-object UserId {
-  implicit val encodeUserId: Encoder[UserId] = Encoder[Long].contramap(_.value)
-  implicit val decodeUserId: Decoder[UserId] = Decoder[Long].map(UserId.apply)
-}
+import java.time.{Instant, LocalDateTime, ZoneOffset}
 
-val bson: BsonValue = UserId(42).asBson // BsonInt64{value=42}
+given Encoder[LocalDateTime] = Encoder[Instant].contramap(_.toInstant(ZoneOffset.UTC))
+given Decoder[LocalDateTime] = Decoder[Instant].map(LocalDateTime.ofInstant(_, ZoneOffset.UTC))
 
-val userId: Either[String, UserId] = bson.as[UserId] // Right(UserId(42))
+val bson: BsonValue = LocalDateTime.of(1970, 1, 1, 0, 0, 0).asBson // BsonDateTime{value=0}
+val time: Either[String, LocalDateTime] = bson.as[LocalDateTime] // Right(1970-01-01T00:00)
 ```
 
+### Refined
+Codecs for [refined](https://github.com/fthomas/refined) types are derived, so if you have `Encoder[A]`, then you have `Encoder[A Refined P]` (where `P` is a predicate) for free. The same for decoders, so having `Decoder[A]` in implicit scope automatically gives you `Decoder[A Refined P]`.
+
+To use calypso-refined in an existing sbt project, add the following dependencies to your build.sbt:
+```scala 3
+libraryDependencies += "ru.m2" %% "calypso-refined" % "<version>"
+```
+```scala 3
+import eu.timepit.refined.types.string.NonEmptyString
+import ru.m2.calypso.refined._
+import ru.m2.calypso.syntax._
+
+NonEmptyString("Text").asBson // BsonString{value='Text'}
+```
 
 ### Why?
 Passion for going with Java MongoDB Driver in a type-safe manner.
 * `MongoDB Scala Driver` are wrappers around `org.bson` without advantages.
 * `Reactive Scala Driver for MongoDB` can not be used without shenanigans with Java MongoDB Driver, as well as it
   does not offer reasonable API to encode/decode case classes.
-* `MongoLess`, `shapeless-reactivemongo`, and `Pure BSON` are based on shapeless, so they are refactoring blind
+* `MongoLess`, `shapeless-reactivemongo`, `Pure BSON` and `medeia` are based on shapeless, so they are refactoring blind
   and not a safe way to express persistence schema.
 * `circe-bson` use JSON subset of BSON which is a no go for binary data.
 
 ### Design
-```scala
+```scala 3
 Encoder[A]: A => org.bson.BsonValue
 Decoder[A]: org.bson.BsonValue => Either[String, A]
 
@@ -153,7 +168,7 @@ On optional values: object keys with null values and non-existing object keys ar
 Calypso type classes come with laws. Encoder and Decoder instances should hold CodecLaws. Calypso uses discipline to define type class laws and the ScalaCheck tests based on them.
 
 First, you will need to specify dependencies on `calypso-testing` in your `build.sbt` file. To keep things simple, we’ll also include the scalacheck-shapeless library, so we don’t have to manually write instances for ScalaCheck’s Arbitrary.
-```scala
+```scala 3
 libraryDependencies ++= List(
   "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"     % "test",
   "org.typelevel"              %% "discipline-scalatest"      % "2.1.2"     % "test",
@@ -163,7 +178,7 @@ libraryDependencies ++= List(
 
 We’ll begin by creating an `Eq` instance for UserId data type, as laws will need to compare values.
 
-```scala
+```scala 3
 import cats.Eq
 import ru.m2.calypso.{Decoder, Encoder}
 
@@ -178,7 +193,7 @@ object UserId {
 
 ScalaCheck requires Arbitrary instances for data types being tested. We will use instances generated by `scalacheck-shapeless`. The following example is for ScalaTest.
 
-```scala
+```scala 3
 import org.scalacheck.ScalacheckShapeless._
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
