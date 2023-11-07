@@ -76,7 +76,7 @@ lazy val core = (project in file("modules/core"))
     description := "calypso core",
     libraryDependencies ++= List(
       "org.mongodb"        % "bson"            % "4.2.3",
-      "org.typelevel"     %% "cats-core"       % "2.8.0",
+      "org.typelevel"     %% "cats-core"       % "2.10.0",
       "org.scalatest"     %% "scalatest"       % "3.2.15"   % "test",
       "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
     ),
@@ -143,7 +143,7 @@ lazy val testing = (project in file("modules/testing"))
     name        := "calypso-testing",
     description := "calypso testing",
     libraryDependencies ++= List(
-      "org.typelevel" %% "cats-laws" % "2.8.0"
+      "org.typelevel" %% "cats-laws" % "2.10.0"
     )
   )
   .dependsOn(core)
