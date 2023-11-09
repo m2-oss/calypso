@@ -31,6 +31,8 @@ object Decoder extends ProductDecoders with CoproductDecoders:
 
   def instance[A](f: BsonValue => Either[String, A]): Decoder[A] = f(_)
 
+  def unit[A](a: A): Decoder[A] = Decoder[Unit].map(_ => a)
+
   def const[A](a: A): Decoder[A] = Decoder.instance(_ => a.asRight)
 
   given Decoder[Boolean] =

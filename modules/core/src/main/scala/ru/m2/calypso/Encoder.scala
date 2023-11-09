@@ -20,6 +20,8 @@ object Encoder extends ProductEncoders:
 
   def instance[A](f: A => BsonValue): Encoder[A] = f(_)
 
+  def unit[A]: Encoder[A] = Encoder[Unit].contramap(_ => ())
+
   def forCoproduct[A](f: A => (String, BsonValue)): Encoder[A] =
     Encoder.forProduct2("tag", "value")(f)
 
