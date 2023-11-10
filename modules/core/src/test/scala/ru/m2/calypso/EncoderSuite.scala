@@ -16,7 +16,7 @@ class EncoderSuite extends ScalaCheckSuite:
           (k.asKey, v.asBson) :: xs
         }.reverse
       )
-      m.asBson == expected
+      assertEquals(m.asBson, expected)
     }
   }
 
@@ -27,6 +27,6 @@ class EncoderSuite extends ScalaCheckSuite:
           (k.asKey, v.asBson) :: xs
         }.reverse
       )
-      m.asBson == expected
+      assertEquals(m.asBson, expected)
     }
   }
