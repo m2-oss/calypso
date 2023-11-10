@@ -4,11 +4,11 @@ import org.bson.BsonValue
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.propspec.AnyPropSpec
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 
 import scala.collection.immutable.SortedMap
 
-class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers {
+class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers:
 
   property("encodeMap preserve insertion order") {
     forAll { (m: Map[Int, Long]) =>
@@ -31,5 +31,3 @@ class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with 
       m.asBson.shouldBe(expected)
     }
   }
-
-}

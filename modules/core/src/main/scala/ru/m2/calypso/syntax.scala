@@ -1,11 +1,11 @@
 package ru.m2.calypso
 
-import cats.syntax.either._
+import cats.syntax.either.*
 import org.bson.{BsonDocument, BsonValue}
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
-object syntax {
+object syntax:
 
   extension [A](a: A)
 
@@ -35,5 +35,3 @@ object syntax {
 
     def asList: List[(String, BsonValue)] =
       bson.entrySet.asScala.toList.map(e => e.getKey -> e.getValue)
-
-}

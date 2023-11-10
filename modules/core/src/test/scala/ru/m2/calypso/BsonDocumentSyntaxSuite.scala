@@ -6,14 +6,10 @@ import org.scalacheck.Gen
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.propspec.AnyPropSpec
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 
-class BsonDocumentSyntaxSuite
-    extends AnyPropSpec
-    with ScalaCheckDrivenPropertyChecks
-    with Matchers {
-
-  import BsonDocumentSyntaxSuite._
+class BsonDocumentSyntaxSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers:
+  import BsonDocumentSyntaxSuite.*
 
   property("downField") {
     forAll(bsonDocumentGen) { case (k, v, doc) =>
@@ -27,12 +23,9 @@ class BsonDocumentSyntaxSuite
     }
   }
 
-}
-
-object BsonDocumentSyntaxSuite {
+object BsonDocumentSyntaxSuite:
   val bsonDocumentGen: Gen[(String, Int, BsonDocument)] =
     for {
       k <- Gen.alphaNumStr
       v <- arbitrary[Int]
     } yield (k, v, Bson.obj(k -> Bson.int32(v)))
-}
