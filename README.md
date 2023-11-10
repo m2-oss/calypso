@@ -131,9 +131,9 @@ NonEmptyString("Text").asBson // BsonString{value='Text'}
 ```
 
 ### Why?
-Passion for going with Java MongoDB Driver in a type-safe manner.
+Passion for going with MongoDB Java Reactive Streams in a type-safe manner.
 * `MongoDB Scala Driver` are wrappers around `org.bson` without advantages.
-* `Reactive Scala Driver for MongoDB` can not be used without shenanigans with Java MongoDB Driver, as well as it
+* `ReactiveMongo` is not compatible with MongoDB Java Reactive Streams, as well as it
   does not offer reasonable API to encode/decode case classes.
 * `MongoLess`, `shapeless-reactivemongo`, `Pure BSON` and `medeia` are based on shapeless, so they are refactoring blind
   and not a safe way to express persistence schema.
@@ -148,7 +148,7 @@ opaque type KeyEncoder[A] = A => String
 opaque type KeyDecoder[A] = String => Either[String, A]
 ```
 This type classes allows to map Scala types to BSON and back. Key codecs are essential to preserving Map keys.
-Library is heavily inspired by [circe](https://circe.github.io/circe/) and [argonaut](http://argonaut.io).
+Library is heavily inspired by [circe](https://github.com/circe/circe) and [argonaut](https://github.com/argonaut-io/argonaut).
 
 * Map keys are encoded as strings
 * Tuple (A, B) is encoded as object {"_1": A, "_2": B}
