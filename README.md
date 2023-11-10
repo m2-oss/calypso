@@ -165,7 +165,6 @@ Calypso type classes come with laws. Encoder and Decoder instances should hold C
 First, you will need to specify dependencies on `calypso-testing` in your `build.sbt` file.
 ```scala 3
 libraryDependencies ++= List(
-  "ru.m2"         %% "calypso-core"         % "<version>",
   "ru.m2"         %% "calypso-testing"      % "<version>" % "test",
   "org.typelevel" %% "discipline-scalatest" % "2.2.0"     % "test"
 )
@@ -179,7 +178,7 @@ import ru.m2.calypso.{Decoder, Encoder}
 
 opaque type UserId = Long
 object UserId:
-  def apply(id: Long): UserId = id
+  def apply(value: Long): UserId = value
 
   given Encoder[UserId] = Encoder.given_Encoder_Long
   given Decoder[UserId] = Decoder.given_Decoder_Long
