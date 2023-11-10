@@ -60,13 +60,12 @@ ThisBuild / licenses := List(
 ThisBuild / homepage := Some(url("https://github.com/m2-oss/calypso"))
 
 ThisBuild / scalacOptions ++= List(
-  "-Xfatal-warnings"
+  "-Werror"
 )
 
 lazy val calypso = (project in file("."))
   .settings(
-    crossScalaVersions := Nil,
-    publish / skip     := true
+    publish / skip := true
   )
   .aggregate(core, tests, refined, refinedTests, scalapb, scalapbTests, testing)
 

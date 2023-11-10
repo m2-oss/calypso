@@ -1,7 +1,7 @@
 # calypso
 
-[![build](https://github.com/m2-oss/calypso/actions/workflows/ci.yml/badge.svg)](https://github.com/m2-oss/calypso/actions)
-[![Maven Central](https://img.shields.io/maven-central/v/ru.m2/calypso-core_2.13)](https://maven-badges.herokuapp.com/maven-central/ru.m2/calypso-core_2.13)
+[![build](https://github.com/m2-oss/calypso/actions/workflows/release.yml/badge.svg)](https://github.com/m2-oss/calypso/actions)
+[![Maven Central](https://img.shields.io/maven-central/v/ru.m2/calypso-core_3)](https://maven-badges.herokuapp.com/maven-central/ru.m2/calypso-core_3)
 
 A BSON library based on `org.bson`. Encoder and Decoder type classes with instances for common types.
 
@@ -46,28 +46,23 @@ cats.data.NonEmptyList
 ```
 
 ### Product type (case class)
-It is possible to construct codecs for [product types](https://en.wikipedia.org/wiki/Product_type) (case classes) using `forProductN` helper methods if you have codecs for each of its elements.
+It is possible to construct codecs for [product types](https://en.wikipedia.org/wiki/Product_type) (case classes) using `forProductN` constructors if you have codecs for each of its elements.
 ```scala 3
 import org.bson.BsonValue
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 import ru.m2.calypso.{Decoder, Encoder}
 
-final case class Record(id: Int, name: String)
-object Record {
-  implicit val encodeRecord: Encoder[Record] =
-    Encoder.forProduct2("id", "name")(r => (r.id, r.name))
-
-  implicit val decodeRecord: Decoder[Record] =
-    Decoder.forProduct2("id", "name")(Record.apply)
-}
+case class Record(id: Int, name: String)
+object Record:
+  given Encoder[Record] = Encoder.forProduct2("id", "name")(r => (r.id, r.name))
+  given Decoder[Record] = Decoder.forProduct2("id", "name")(Record.apply)
 
 val bson: BsonValue = Record(1, "John").asBson // {"id": 1, "name": "John"}
-
 val record: Either[String, Record] = bson.as[Record] // Right(Record(1,John))
 ```
 
 ### Coproduct type (sealed trait hierarchy)
-Coproduct is also known as [ADT](https://en.wikipedia.org/wiki/Algebraic_data_type), sum, or [tagged union](https://en.wikipedia.org/wiki/Tagged_union). Not as ergonomic as product type, but it is possible to create codecs for coproduct types using `forCoproductN` helper methods.
+Coproduct is also known as [ADT](https://en.wikipedia.org/wiki/Algebraic_data_type), sum, or [tagged union](https://en.wikipedia.org/wiki/Tagged_union). Not as ergonomic as product type, but it is possible to create codecs for coproduct types using `forCoproductN` constructors.
 ```scala 3
 import org.bson.BsonValue
 import ru.m2.calypso.syntax.*
@@ -131,8 +126,8 @@ libraryDependencies += "ru.m2" %% "calypso-refined" % "<version>"
 ```
 ```scala 3
 import eu.timepit.refined.types.string.NonEmptyString
-import ru.m2.calypso.refined._
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.refined.*
+import ru.m2.calypso.syntax.*
 
 NonEmptyString("Text").asBson // BsonString{value='Text'}
 ```
@@ -148,11 +143,11 @@ Passion for going with Java MongoDB Driver in a type-safe manner.
 
 ### Design
 ```scala 3
-Encoder[A]: A => org.bson.BsonValue
-Decoder[A]: org.bson.BsonValue => Either[String, A]
+opaque type Encoder[A] = A => org.bson.BsonValue
+opaque type Decoder[A] = org.bson.BsonValue => Either[String, A]
 
-KeyEncoder[A]: A => String
-KeyDecoder[A]: String => Either[String, A]
+opaque type KeyEncoder[A] = A => String
+opaque type KeyDecoder[A] = String => Either[String, A]
 ```
 This type classes allows to map Scala types to BSON and back. Key codecs are essential to preserving Map keys.
 Library is heavily inspired by [circe](https://circe.github.io/circe/) and [argonaut](http://argonaut.io).
@@ -167,12 +162,12 @@ On optional values: object keys with null values and non-existing object keys ar
 ### Law testing
 Calypso type classes come with laws. Encoder and Decoder instances should hold CodecLaws. Calypso uses discipline to define type class laws and the ScalaCheck tests based on them.
 
-First, you will need to specify dependencies on `calypso-testing` in your `build.sbt` file. To keep things simple, we’ll also include the scalacheck-shapeless library, so we don’t have to manually write instances for ScalaCheck’s Arbitrary.
+First, you will need to specify dependencies on `calypso-testing` in your `build.sbt` file.
 ```scala 3
 libraryDependencies ++= List(
-  "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"     % "test",
-  "org.typelevel"              %% "discipline-scalatest"      % "2.1.2"     % "test",
-  "ru.m2"                      %% "calypso-testing"           % "<version>" % "test"
+  "ru.m2"         %% "calypso-core"         % "<version>",
+  "ru.m2"         %% "calypso-testing"      % "<version>" % "test",
+  "org.typelevel" %% "discipline-scalatest" % "2.2.0"     % "test"
 )
 ```
 
@@ -182,40 +177,43 @@ We’ll begin by creating an `Eq` instance for UserId data type, as laws will ne
 import cats.Eq
 import ru.m2.calypso.{Decoder, Encoder}
 
-final case class UserId(value: Long) extends AnyVal
-object UserId {
-  implicit val encodeUserId: Encoder[UserId] = Encoder[Long].contramap(_.value)
-  implicit val decodeUserId: Decoder[UserId] = Decoder[Long].map(UserId.apply)
+opaque type UserId = Long
+object UserId:
+  def apply(id: Long): UserId = id
 
-  implicit val eqUserId: Eq[UserId] = Eq.fromUniversalEquals
-}
+  given Encoder[UserId] = Encoder.given_Encoder_Long
+  given Decoder[UserId] = Decoder.given_Decoder_Long
+  given Eq[UserId]      = Eq.fromUniversalEquals
+
 ```
 
-ScalaCheck requires Arbitrary instances for data types being tested. We will use instances generated by `scalacheck-shapeless`. The following example is for ScalaTest.
+ScalaCheck requires Arbitrary instances for data types being tested. The following example is for ScalaTest.
 
 ```scala 3
-import org.scalacheck.ScalacheckShapeless._
+import io.testing.CodecSuite.given
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
 import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 import ru.m2.calypso.testing.CodecTests
 
-class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
+class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration:
   checkAll("Codec[UserId]", CodecTests[UserId].codec)
-}
+
+object CodecSuite:
+  given Arbitrary[UserId] = Arbitrary(Gen.long.map(UserId.apply))
+
 ```
 
 Now when we run test in sbt console, ScalaCheck will test if the Codec laws hold for our UserId type. You should see something like this:
 ```
 [info] CodecSuite:
 [info] - Codec[UserId].codec.roundTrip
-[info] ScalaTest
-[info] Run completed in 196 milliseconds.
+[info] Run completed in 289 milliseconds.
 [info] Total number of tests run: 1
 [info] Suites: completed 1, aborted 0
 [info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
 [info] All tests passed.
-[info] Passed: Total 1, Failed 0, Errors 0, Passed 1
-[success] Total time: 2 s, completed Feb 21, 2021, 12:59:53 AM
+[success] Total time: 1 s, completed Nov 10, 2023 3:08:44 AM
 ```
 You are gorgeous — the data type upholds the Codec laws!

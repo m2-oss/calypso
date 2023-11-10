@@ -65,7 +65,6 @@ object Encoder extends ProductEncoders:
     oa => oa.fold[BsonValue](Bson.nullValue)(_.asBson)
 
   given [A: Encoder, B: Encoder]: Encoder[Either[A, B]] =
-    Encoder.forCoproduct {
+    Encoder.forCoproduct:
       case Left(a)  => "left"  -> a.asBson
       case Right(b) => "right" -> b.asBson
-    }

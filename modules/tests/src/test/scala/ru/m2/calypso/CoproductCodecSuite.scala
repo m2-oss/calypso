@@ -1,17 +1,16 @@
 package ru.m2.calypso
 
 import cats.Eq
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
 import org.typelevel.discipline.scalatest.FunSuiteDiscipline
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 import ru.m2.calypso.testing.CodecTests
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Gen
 
 class CoproductCodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
-  import CoproductCodecSuite._
+  import CoproductCodecSuite.*
 
   checkAll("Codec[AorB]", CodecTests[AorB].codec)
 }

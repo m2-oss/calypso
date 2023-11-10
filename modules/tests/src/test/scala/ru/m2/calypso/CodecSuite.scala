@@ -1,18 +1,18 @@
 package ru.m2.calypso
 
 import cats.data.NonEmptyList
-import cats.laws.discipline.arbitrary._
+import cats.laws.discipline.arbitrary.*
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.prop.Configuration
 import org.typelevel.discipline.scalatest.FunSuiteDiscipline
-import ru.m2.calypso.MissingInstances._
+import ru.m2.calypso.MissingInstances.given
 import ru.m2.calypso.testing.CodecTests
 
 import java.time.Instant
 import java.util.UUID
 import scala.collection.immutable.{SortedMap, SortedSet}
 
-class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
+class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration:
   checkAll("Codec[Unit]", CodecTests[Unit].codec)
   checkAll("Codec[Boolean]", CodecTests[Boolean].codec)
   checkAll("Codec[Int]", CodecTests[Int].codec)
@@ -30,4 +30,3 @@ class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configurat
   checkAll("Codec[Array[Byte]]", CodecTests[Array[Byte]].codec)
   checkAll("Codec[Instant]", CodecTests[Instant].codec)
   checkAll("Codec[UUID]", CodecTests[UUID].codec)
-}
