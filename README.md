@@ -96,8 +96,6 @@ object Example:
   
   val a: Either[String, AorB] = aBson.as[AorB] // Right(A(42))
   val b: Either[String, AorB] = bBson.as[AorB] // Right(B(hello))
-
-
 ```
 
 ### Derive codecs
@@ -133,9 +131,9 @@ NonEmptyString("Text").asBson // BsonString{value='Text'}
 ```
 
 ### Why?
-Passion for going with Java MongoDB Driver in a type-safe manner.
+Passion for going with MongoDB Java Reactive Streams in a type-safe manner.
 * `MongoDB Scala Driver` are wrappers around `org.bson` without advantages.
-* `Reactive Scala Driver for MongoDB` can not be used without shenanigans with Java MongoDB Driver, as well as it
+* `ReactiveMongo` is not compatible with MongoDB Java Reactive Streams, as well as it
   does not offer reasonable API to encode/decode case classes.
 * `MongoLess`, `shapeless-reactivemongo`, `Pure BSON` and `medeia` are based on shapeless, so they are refactoring blind
   and not a safe way to express persistence schema.
@@ -150,7 +148,7 @@ opaque type KeyEncoder[A] = A => String
 opaque type KeyDecoder[A] = String => Either[String, A]
 ```
 This type classes allows to map Scala types to BSON and back. Key codecs are essential to preserving Map keys.
-Library is heavily inspired by [circe](https://circe.github.io/circe/) and [argonaut](http://argonaut.io).
+Library is heavily inspired by [circe](https://github.com/circe/circe) and [argonaut](https://github.com/argonaut-io/argonaut).
 
 * Map keys are encoded as strings
 * Tuple (A, B) is encoded as object {"_1": A, "_2": B}
@@ -165,8 +163,8 @@ Calypso type classes come with laws. Encoder and Decoder instances should hold C
 First, you will need to specify dependencies on `calypso-testing` in your `build.sbt` file.
 ```scala 3
 libraryDependencies ++= List(
-  "ru.m2"         %% "calypso-testing"      % "<version>" % "test",
-  "org.typelevel" %% "discipline-scalatest" % "2.2.0"     % "test"
+  "ru.m2"         %% "calypso-testing"  % "<version>" % Test,
+  "org.typelevel" %% "discipline-munit" % "1.0.9"     % Test
 )
 ```
 
@@ -183,36 +181,25 @@ object UserId:
   given Encoder[UserId] = Encoder.given_Encoder_Long
   given Decoder[UserId] = Decoder.given_Decoder_Long
   given Eq[UserId]      = Eq.fromUniversalEquals
-
 ```
 
-ScalaCheck requires Arbitrary instances for data types being tested. The following example is for ScalaTest.
+ScalaCheck requires Arbitrary instances for data types being tested. The following example is for MUnit.
 
 ```scala 3
-import io.testing.CodecSuite.given
+import munit.DisciplineSuite
 import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest.funsuite.AnyFunSuiteLike
-import org.scalatest.prop.Configuration
-import org.typelevel.discipline.scalatest.FunSuiteDiscipline
 import ru.m2.calypso.testing.CodecTests
 
-class CodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration:
+class CodecSuite extends DisciplineSuite:
   checkAll("Codec[UserId]", CodecTests[UserId].codec)
 
-object CodecSuite:
-  given Arbitrary[UserId] = Arbitrary(Gen.long.map(UserId.apply))
-
+given Arbitrary[UserId] = Arbitrary(Gen.long.map(UserId.apply))
 ```
 
 Now when we run test in sbt console, ScalaCheck will test if the Codec laws hold for our UserId type. You should see something like this:
 ```
-[info] CodecSuite:
-[info] - Codec[UserId].codec.roundTrip
-[info] Run completed in 289 milliseconds.
-[info] Total number of tests run: 1
-[info] Suites: completed 1, aborted 0
-[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
-[info] All tests passed.
-[success] Total time: 1 s, completed Nov 10, 2023 3:08:44 AM
+ru.m2.example.CodecSuite:
+  + Codec[UserId]: codec.roundTrip 0.04s
+[info] Passed: Total 1, Failed 0, Errors 0, Passed 1
 ```
 You are gorgeous — the data type upholds the Codec laws!
