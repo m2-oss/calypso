@@ -74,7 +74,7 @@ lazy val core = (project in file("modules/core"))
     name        := "calypso-core",
     description := "calypso core",
     libraryDependencies ++= List(
-      "org.mongodb"    % "bson"             % "4.2.3",
+      "org.mongodb"    % "bson"             % "4.11.1",
       "org.typelevel" %% "cats-core"        % "2.10.0",
       "org.scalameta" %% "munit"            % "0.7.29" % Test,
       "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test
