@@ -1,22 +1,17 @@
 package ru.m2.calypso
 
 import cats.Eq
-import org.scalatest.funsuite.AnyFunSuiteLike
-import org.scalatest.prop.Configuration
-import org.typelevel.discipline.scalatest.FunSuiteDiscipline
-import ru.m2.calypso.syntax._
-import ru.m2.calypso.testing.CodecTests
-import org.scalacheck.Arbitrary
+import munit.DisciplineSuite
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Gen
+import org.scalacheck.{Arbitrary, Gen}
+import ru.m2.calypso.syntax.*
+import ru.m2.calypso.testing.CodecTests
 
-class CoproductCodecSuite extends AnyFunSuiteLike with FunSuiteDiscipline with Configuration {
-  import CoproductCodecSuite._
-
+class CoproductCodecSuite extends DisciplineSuite:
+  import CoproductCodecSuite.*
   checkAll("Codec[AorB]", CodecTests[AorB].codec)
-}
 
-object CoproductCodecSuite {
+object CoproductCodecSuite:
 
   import AorB.{A, B}
 
@@ -40,5 +35,3 @@ object CoproductCodecSuite {
 
   given Arbitrary[AorB] =
     Arbitrary(Gen.oneOf(arbitrary[Int].map(A.apply), arbitrary[String].map(B.apply)))
-
-}

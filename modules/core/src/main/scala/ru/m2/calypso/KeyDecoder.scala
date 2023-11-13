@@ -1,6 +1,6 @@
 package ru.m2.calypso
 
-import cats.syntax.either._
+import cats.syntax.either.*
 
 trait KeyDecoder[A]:
 
@@ -18,8 +18,5 @@ object KeyDecoder:
 
   def instance[A](f: String => Either[String, A]): KeyDecoder[A] = f(_)
 
-  implicit val decodeKeyString: KeyDecoder[String] = KeyDecoder.instance(_.asRight)
-
-  implicit val decodeKeyInt: KeyDecoder[Int] = KeyDecoder.instance { s =>
-    s.toIntOption.toRight(s"KeyDecoder[Int].failure: [$s]")
-  }
+  given KeyDecoder[String] = s => s.asRight
+  given KeyDecoder[Int]    = s => s.toIntOption.toRight(s"KeyDecoder[Int].failure: [$s]")

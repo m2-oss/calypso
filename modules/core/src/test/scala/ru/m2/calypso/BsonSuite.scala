@@ -1,15 +1,11 @@
 package ru.m2.calypso
 
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.propspec.AnyPropSpec
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import munit.ScalaCheckSuite
+import org.scalacheck.Prop.*
 
-class BsonSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers {
-
+class BsonSuite extends ScalaCheckSuite:
   property("Bson.obj skips null value") {
     forAll { (k: String) =>
-      Bson.obj(k -> Bson.nullValue).shouldBe(Bson.empty)
+      assertEquals(Bson.obj(k -> Bson.nullValue), Bson.empty)
     }
   }
-
-}

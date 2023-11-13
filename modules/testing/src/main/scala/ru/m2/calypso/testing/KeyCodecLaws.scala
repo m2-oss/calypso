@@ -1,7 +1,7 @@
 package ru.m2.calypso.testing
 
 import cats.Eq
-import cats.laws._
+import cats.laws.*
 import cats.laws.discipline.catsLawsIsEqToProp
 import org.scalacheck.{Arbitrary, Prop, Shrink}
 import org.typelevel.discipline.Laws

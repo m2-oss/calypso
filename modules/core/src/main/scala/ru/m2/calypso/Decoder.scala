@@ -1,16 +1,16 @@
 package ru.m2.calypso
 
 import cats.data.NonEmptyList
-import cats.syntax.either._
-import cats.syntax.traverse._
-import org.bson._
+import cats.syntax.either.*
+import cats.syntax.traverse.*
+import org.bson.*
 import ru.m2.calypso.boilerplate.{CoproductDecoders, ProductDecoders}
-import ru.m2.calypso.syntax._
+import ru.m2.calypso.syntax.*
 
 import java.time.Instant
 import java.util.UUID
 import scala.collection.immutable.{SortedMap, SortedSet}
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 trait Decoder[A]:
 
@@ -75,18 +75,17 @@ object Decoder extends ProductDecoders with CoproductDecoders:
 
   given [A: Decoder]: Decoder[List[A]] =
     Decoder.instance { bson =>
-      for {
+      for
         xs <- Either.catchNonFatal(bson.asArray()).bimap(_.getMessage, _.asScala.toList)
         as <- xs.traverse(_.as[A])
-      } yield as
+      yield as
     }
 
   given [A: Decoder]: Decoder[NonEmptyList[A]] =
     Decoder[List[A]].emap { xs =>
-      NonEmptyList.fromList(xs) match {
+      NonEmptyList.fromList(xs) match
         case None     => "NonEmptyList.empty".asLeft
         case Some(xs) => xs.asRight
-      }
     }
 
   given [A: Decoder]: Decoder[Set[A]] =
@@ -101,28 +100,28 @@ object Decoder extends ProductDecoders with CoproductDecoders:
 
   given [K: KeyDecoder, V: Decoder]: Decoder[Map[K, V]] =
     Decoder.instance { bson =>
-      for {
+      for
         doc <- bson.focus
         xs <- doc.asList.traverse { case (key, bson) =>
-          for {
+          for
             k <- key.as[K]
             v <- bson.as[V]
-          } yield k -> v
+          yield k -> v
         }
-      } yield xs.toMap
+      yield xs.toMap
     }
 
   given [K: KeyDecoder: Ordering, V: Decoder]: Decoder[SortedMap[K, V]] =
     Decoder.instance { bson =>
-      for {
+      for
         doc <- bson.focus
         xs <- doc.asList.traverse { case (key, bson) =>
-          for {
+          for
             k <- key.as[K]
             v <- bson.as[V]
-          } yield k -> v
+          yield k -> v
         }
-      } yield SortedMap.from(xs)
+      yield SortedMap.from(xs)
     }
 
   given [A: Decoder]: Decoder[Option[A]] =
@@ -142,8 +141,8 @@ object Decoder extends ProductDecoders with CoproductDecoders:
 
   given Decoder[UUID] =
     Decoder.instance { bson =>
-      for {
+      for
         b    <- Either.catchNonFatal(bson.asBinary()).leftMap(_.getMessage)
         uuid <- Either.catchNonFatal(b.asUuid()).leftMap(_.getMessage)
-      } yield uuid
+      yield uuid
     }

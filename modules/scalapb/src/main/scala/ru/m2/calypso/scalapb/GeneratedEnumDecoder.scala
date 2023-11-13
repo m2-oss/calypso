@@ -1,9 +1,8 @@
 package ru.m2.calypso.scalapb
 
-import cats.syntax.either._
+import cats.syntax.either.*
 import ru.m2.calypso.Decoder
-import scalapb.GeneratedEnum
-import scalapb.GeneratedEnumCompanion
+import scalapb.{GeneratedEnum, GeneratedEnumCompanion}
 
 object GeneratedEnumDecoder:
 

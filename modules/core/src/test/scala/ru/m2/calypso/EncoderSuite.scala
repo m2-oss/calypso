@@ -1,14 +1,13 @@
 package ru.m2.calypso
 
+import munit.ScalaCheckSuite
 import org.bson.BsonValue
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.propspec.AnyPropSpec
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import ru.m2.calypso.syntax._
+import org.scalacheck.Prop.*
+import ru.m2.calypso.syntax.*
 
 import scala.collection.immutable.SortedMap
 
-class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with Matchers {
+class EncoderSuite extends ScalaCheckSuite:
 
   property("encodeMap preserve insertion order") {
     forAll { (m: Map[Int, Long]) =>
@@ -17,7 +16,7 @@ class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with 
           (k.asKey, v.asBson) :: xs
         }.reverse
       )
-      m.asBson.shouldBe(expected)
+      assertEquals(m.asBson, expected)
     }
   }
 
@@ -28,8 +27,6 @@ class EncoderSuite extends AnyPropSpec with ScalaCheckDrivenPropertyChecks with 
           (k.asKey, v.asBson) :: xs
         }.reverse
       )
-      m.asBson.shouldBe(expected)
+      assertEquals(m.asBson, expected)
     }
   }
-
-}

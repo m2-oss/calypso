@@ -60,13 +60,12 @@ ThisBuild / licenses := List(
 ThisBuild / homepage := Some(url("https://github.com/m2-oss/calypso"))
 
 ThisBuild / scalacOptions ++= List(
-  "-Xfatal-warnings"
+  "-Werror"
 )
 
 lazy val calypso = (project in file("."))
   .settings(
-    crossScalaVersions := Nil,
-    publish / skip     := true
+    publish / skip := true
   )
   .aggregate(core, tests, refined, refinedTests, scalapb, scalapbTests, testing)
 
@@ -75,10 +74,10 @@ lazy val core = (project in file("modules/core"))
     name        := "calypso-core",
     description := "calypso core",
     libraryDependencies ++= List(
-      "org.mongodb"        % "bson"            % "4.2.3",
-      "org.typelevel"     %% "cats-core"       % "2.10.0",
-      "org.scalatest"     %% "scalatest"       % "3.2.15"   % "test",
-      "org.scalatestplus" %% "scalacheck-1-16" % "3.2.13.0" % "test"
+      "org.mongodb"    % "bson"             % "4.2.3",
+      "org.typelevel" %% "cats-core"        % "2.10.0",
+      "org.scalameta" %% "munit"            % "0.7.29" % Test,
+      "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test
     ),
     Compile / sourceGenerators += Boilerplate.generatorTask.taskValue,
     Compile / unmanagedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersion.value}/src_managed"
@@ -89,7 +88,7 @@ lazy val tests = (project in file("modules/tests"))
     name        := "calypso-tests",
     description := "calypso tests",
     libraryDependencies ++= List(
-      "org.typelevel" %% "discipline-scalatest" % "2.2.0" % "test"
+      "org.typelevel" %% "discipline-munit" % "1.0.9" % Test
     ),
     publish / skip := true
   )
@@ -110,8 +109,8 @@ lazy val refinedTests = (project in file("modules/refined-tests"))
     name        := "calypso-refined-tests",
     description := "calypso refined tests",
     libraryDependencies ++= List(
-      "eu.timepit"    %% "refined-scalacheck"   % "0.11.0" % "test",
-      "org.typelevel" %% "discipline-scalatest" % "2.2.0"  % "test"
+      "eu.timepit"    %% "refined-scalacheck" % "0.11.0" % Test,
+      "org.typelevel" %% "discipline-munit"   % "1.0.9"  % Test
     ),
     publish / skip := true
   )
@@ -122,7 +121,7 @@ lazy val scalapb = (project in file("modules/scalapb"))
     name        := "calypso-scalapb",
     description := "calypso scalapb",
     libraryDependencies ++= List(
-      "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.11"
+      "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.14"
     )
   )
   .dependsOn(core)
@@ -132,7 +131,7 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
     name        := "calypso-scalapb-tests",
     description := "calypso scalapb tests",
     libraryDependencies ++= List(
-      "org.typelevel" %% "discipline-scalatest" % "2.2.0" % "test"
+      "org.typelevel" %% "discipline-munit" % "1.0.9" % Test
     ),
     publish / skip := true
   )
