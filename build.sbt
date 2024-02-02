@@ -99,7 +99,7 @@ lazy val refined = (project in file("modules/refined"))
     name        := "calypso-refined",
     description := "calypso refined",
     libraryDependencies ++= List(
-      "eu.timepit" %% "refined" % "0.11.0"
+      "eu.timepit" %% "refined" % "0.11.1"
     )
   )
   .dependsOn(core)
@@ -109,7 +109,7 @@ lazy val refinedTests = (project in file("modules/refined-tests"))
     name        := "calypso-refined-tests",
     description := "calypso refined tests",
     libraryDependencies ++= List(
-      "eu.timepit"    %% "refined-scalacheck" % "0.11.0" % Test,
+      "eu.timepit"    %% "refined-scalacheck" % "0.11.1" % Test,
       "org.typelevel" %% "discipline-munit"   % "1.0.9"  % Test
     ),
     publish / skip := true
