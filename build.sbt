@@ -88,7 +88,7 @@ lazy val tests = (project in file("modules/tests"))
     name        := "calypso-tests",
     description := "calypso tests",
     libraryDependencies ++= List(
-      "org.typelevel" %% "discipline-munit" % "1.0.9" % Test
+      "org.typelevel" %% "discipline-munit" % "2.0.0" % Test
     ),
     publish / skip := true
   )
@@ -110,7 +110,7 @@ lazy val refinedTests = (project in file("modules/refined-tests"))
     description := "calypso refined tests",
     libraryDependencies ++= List(
       "eu.timepit"    %% "refined-scalacheck" % "0.11.2" % Test,
-      "org.typelevel" %% "discipline-munit"   % "1.0.9"  % Test
+      "org.typelevel" %% "discipline-munit"   % "2.0.0"  % Test
     ),
     publish / skip := true
   )
@@ -131,7 +131,7 @@ lazy val scalapbTests = (project in file("modules/scalapb-tests"))
     name        := "calypso-scalapb-tests",
     description := "calypso scalapb tests",
     libraryDependencies ++= List(
-      "org.typelevel" %% "discipline-munit" % "1.0.9" % Test
+      "org.typelevel" %% "discipline-munit" % "2.0.0" % Test
     ),
     publish / skip := true
   )
