@@ -11,7 +11,7 @@ object Bson:
       case (bson, (_, v)) if v.isNull => bson
       case (bson, (k, v))             => bson.append(k, v)
 
-  def of(xs: List[(String, BsonValue)]): BsonDocument = obj(xs: _*)
+  def of(xs: List[(String, BsonValue)]): BsonDocument = obj(xs*)
 
   def arr(xs: List[BsonValue]): BsonArray =
     val bson = BsonArray()
