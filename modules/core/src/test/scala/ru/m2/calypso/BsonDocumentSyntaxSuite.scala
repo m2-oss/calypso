@@ -24,7 +24,7 @@ class BsonDocumentSyntaxSuite extends ScalaCheckSuite:
 
 object BsonDocumentSyntaxSuite:
   val bsonDocumentGen: Gen[(String, Int, BsonDocument)] =
-    for {
+    for
       k <- Gen.alphaNumStr
       v <- arbitrary[Int]
-    } yield (k, v, Bson.obj(k -> Bson.int32(v)))
+    yield (k, v, Bson.obj(k -> Bson.int32(v)))

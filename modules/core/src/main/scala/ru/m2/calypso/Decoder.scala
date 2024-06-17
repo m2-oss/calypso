@@ -130,7 +130,10 @@ object Decoder extends ProductDecoders with CoproductDecoders:
     }
 
   given [A: Decoder, B: Decoder]: Decoder[Either[A, B]] =
-    Decoder.forCoproduct2("left", "right")(Decoder[A].map(_.asLeft), Decoder[B].map(_.asRight))
+    Decoder.forCoproduct2("left", "right")(using
+      Decoder[A].map(_.asLeft),
+      Decoder[B].map(_.asRight)
+    )
 
   given Decoder[Instant] =
     Decoder.instance { bson =>
