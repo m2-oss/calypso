@@ -4,6 +4,8 @@ ThisBuild / organization         := "ru.m2"
 ThisBuild / organizationName     := "m2"
 ThisBuild / organizationHomepage := Some(url("https://m2.ru"))
 
+ThisBuild / versionScheme := Some("early-semver")
+
 ThisBuild / scmInfo := Some(
   ScmInfo(
     url("https://github.com/m2-oss/calypso"),
