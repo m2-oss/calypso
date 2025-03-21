@@ -79,7 +79,7 @@ lazy val core = (project in file("modules/core"))
       "org.mongodb"    % "bson"             % "5.2.1",
       "org.typelevel" %% "cats-core"        % "2.12.0",
       "org.scalameta" %% "munit"            % "1.0.4" % Test,
-      "org.scalameta" %% "munit-scalacheck" % "1.0.0" % Test
+      "org.scalameta" %% "munit-scalacheck" % "1.1.0" % Test
     ),
     Compile / sourceGenerators += Boilerplate.generatorTask.taskValue,
     Compile / unmanagedSourceDirectories += baseDirectory.value / s"target/scala-${scalaVersion.value}/src_managed"
