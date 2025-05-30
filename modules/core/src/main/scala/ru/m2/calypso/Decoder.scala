@@ -102,7 +102,7 @@ object Decoder extends ProductDecoders with CoproductDecoders:
     Decoder.instance { bson =>
       for
         doc <- bson.focus
-        xs <- doc.asList.traverse { case (key, bson) =>
+        xs  <- doc.asList.traverse { case (key, bson) =>
           for
             k <- key.as[K]
             v <- bson.as[V]
@@ -115,7 +115,7 @@ object Decoder extends ProductDecoders with CoproductDecoders:
     Decoder.instance { bson =>
       for
         doc <- bson.focus
-        xs <- doc.asList.traverse { case (key, bson) =>
+        xs  <- doc.asList.traverse { case (key, bson) =>
           for
             k <- key.as[K]
             v <- bson.as[V]
