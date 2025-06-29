@@ -22,8 +22,8 @@ object CoproductCodecSuite:
   object AorB:
     given Eq[AorB] = Eq.fromUniversalEquals
 
-    given Encoder[A] = Encoder.forProduct1("i")(_.i)
-    given Encoder[B] = Encoder.forProduct1("s")(_.s)
+    given Encoder[A]    = Encoder.forProduct1("i")(_.i)
+    given Encoder[B]    = Encoder.forProduct1("s")(_.s)
     given Encoder[AorB] = Encoder.forCoproduct {
       case a: A => "A" -> a.asBson
       case b: B => "B" -> b.asBson
